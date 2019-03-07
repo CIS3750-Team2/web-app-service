@@ -1,7 +1,7 @@
 import {createStore, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 
-import reducer from 'reducers/reducer';
+import reducer from 'core/reducer';
 
 let middleware = applyMiddleware(thunk);
 if (window.__REDUX_DEVTOOLS_EXTENSION__) {

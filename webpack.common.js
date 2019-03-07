@@ -69,7 +69,7 @@ module.exports = (env = {}) => ({
         }, {})),
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
-            title: 'CIS3750 Web App',
+            title: 'SunDial',
             filename: 'index.html',
             hash: env.NODE_ENV !== 'development',
             template: 'root.html',

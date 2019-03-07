@@ -35,7 +35,7 @@ class Storage {
     };
 }
 
-const instance = new Storage('ZOOM_v1');
+const instance = new Storage('SunDial_v1');
 
 /**
  * Creates a redux middleware that will store a portion of the state into local storage

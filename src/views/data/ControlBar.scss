@@ -1,0 +1,14 @@
+.control-bar {
+  display: flex;
+  flex-flow: row nowrap;
+
+  .quick-search {
+    width: 40%;
+    min-width: 150px;
+    margin-right: auto;
+  }
+
+  > button {
+    margin-left: 12px;
+  }
+}

@@ -1,8 +1,9 @@
 import React from 'react';
 import {Provider} from 'react-redux';
+import {BrowserRouter as Router} from 'react-router-dom';
 import {render} from 'react-dom';
 
-import routes from 'core/routes';
+import App from 'views/app';
 import store from 'core/store';
 
 import 'index.scss';
@@ -12,7 +13,9 @@ window.getStore = () => store;
 
 render(
     <Provider store={store}>
-        { routes }
+        <Router>
+            <App/>
+        </Router>
     </Provider>,
     document.getElementById('root')
 );

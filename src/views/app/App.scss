@@ -1,0 +1,24 @@
+#app-layout {
+  height: 100vh;
+
+  > header {
+    line-height: 48px;
+    height: 48px;
+
+    .app-menu {
+      line-height: 48px;
+      height: 48px;
+    }
+  }
+
+  > main {
+    padding: 24px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  > footer {
+    padding: 12px 50px;
+    background: rgba(0, 0, 0, 0.15);
+  }
+}

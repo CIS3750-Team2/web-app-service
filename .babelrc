@@ -9,7 +9,7 @@
     "react-hot-loader/babel",
     ["import", {
   		"libraryName": "antd",
-  		"style": true,
+  		"style": true
     }]
   ]
 }

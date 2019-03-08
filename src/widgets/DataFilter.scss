@@ -1,0 +1,22 @@
+.data-filter-form {
+  .form-range-group {
+    margin-bottom: 0;
+
+    .form-range-item {
+      display: inline-block;
+      width: calc(50% - 12px);
+    }
+
+    .form-range-separator {
+      display: inline-block;
+      width: 24px;
+      text-align: center;
+      line-height: 40px;
+    }
+  }
+
+  .form-small-group {
+    height: 40px;
+    margin-bottom: 12px;
+  }
+}

@@ -10,6 +10,8 @@ import {
     setTableSearch
 } from 'core/reducer';
 
+import {useModals} from 'util/ModalProvider';
+import FilterDataModal from './FilterDataModal';
 import {message, Input, Button, Menu, Dropdown, Icon} from 'antd';
 
 import './ControlBar.scss';
@@ -36,7 +38,7 @@ val21,val22`;
     message.success('Export ready. Downloading...');
 };
 
-const ControlBar = connect(
+const ControlBar = useModals(connect(
     (state) => ({
         search: getTableSearch(state),
         tableData: getTableData(state),
@@ -45,7 +47,7 @@ const ControlBar = connect(
     (dispatch) => bindActionCreators({
         setSearch: setTableSearch
     }, dispatch)
-)(({ search, tableData, rawData, setSearch }) => (
+)(({ search, tableData, rawData, setSearch, openModal }) => (
     <div className='control-bar'>
         <Input
             placeholder='Quick search'
@@ -55,7 +57,11 @@ const ControlBar = connect(
             onChange={({ target: { value } }) => setSearch(value)}
         />
 
-        <Button type='primary'>
+        <Button
+            type='primary'
+            icon='tool'
+            onClick={() => openModal(<FilterDataModal/>)}
+        >
             Filter...
         </Button>
         <Dropdown overlay={
@@ -75,6 +81,6 @@ const ControlBar = connect(
             </Button>
         </Dropdown>
     </div>
-));
+)));
 
 export default ControlBar;

@@ -1,53 +1,28 @@
 import React from 'react';
 import {createSelector} from 'reselect';
+import _ from 'lodash';
 
-const mockData = [
-    { id: 1, firstName: 'John', lastName: 'Doe', salary: 100050, industry: 'Education' },
-    { id: 2, firstName: 'Bill', lastName: 'Smith', salary: 200150, industry: 'Emergency Services' },
-    { id: 3, firstName: 'Jenny', lastName: 'Doe', salary: 150050, industry: 'Emergency Services' },
-    { id: 4, firstName: 'Phill', lastName: 'Newman', salary: 171050, industry: 'Education' },
-    { id: 5, firstName: 'John', lastName: 'Smith', salary: 122070, industry: 'Education' },
-    { id: 6, firstName: 'John', lastName: 'Doe', salary: 100050, industry: 'Education' },
-    { id: 20, firstName: 'John', lastName: 'Smith', salary: 122070, industry: 'Education' },
-    { id: 21, firstName: 'John', lastName: 'Doe', salary: 100050, industry: 'Education' },
-    { id: 10, firstName: 'John', lastName: 'Smith', salary: 122070, industry: 'Education' },
-    { id: 11, firstName: 'John', lastName: 'Doe', salary: 100050, industry: 'Education' },
-    { id: 12, firstName: 'Bill', lastName: 'Smith', salary: 200150, industry: 'Emergency Services' },
-    { id: 13, firstName: 'Jenny', lastName: 'Doe', salary: 150050, industry: 'Emergency Services' },
-    { id: 14, firstName: 'Phill', lastName: 'Newman', salary: 171050, industry: 'Education' },
-    { id: 15, firstName: 'John', lastName: 'Smith', salary: 122070, industry: 'Education' },
-    { id: 16, firstName: 'John', lastName: 'Doe', salary: 100050, industry: 'Education' },
-    { id: 7, firstName: 'Bill', lastName: 'Smith', salary: 200150, industry: 'Emergency Services' },
-    { id: 8, firstName: 'Jenny', lastName: 'Doe', salary: 150050, industry: 'Emergency Services' },
-    { id: 9, firstName: 'Phill', lastName: 'Newman', salary: 171050, industry: 'Education' },
-    { id: 19, firstName: 'Phill', lastName: 'Newman', salary: 171050, industry: 'Education' },
-    { id: 17, firstName: 'Bill', lastName: 'Smith', salary: 200150, industry: 'Emergency Services' },
-    { id: 18, firstName: 'Jenny', lastName: 'Doe', salary: 150050, industry: 'Emergency Services' },
-    { id: 22, firstName: 'Bill', lastName: 'Smith', salary: 200150, industry: 'Emergency Services' },
-    { id: 23, firstName: 'Jenny', lastName: 'Doe', salary: 150050, industry: 'Emergency Services' },
-    { id: 24, firstName: 'Phill', lastName: 'Newman', salary: 171050, industry: 'Education' },
-    { id: 25, firstName: 'John', lastName: 'Smith', salary: 122070, industry: 'Education' },
-    { id: 26, firstName: 'John', lastName: 'Doe', salary: 100050, industry: 'Education' },
-    { id: 27, firstName: 'Bill', lastName: 'Smith', salary: 200150, industry: 'Emergency Services' },
-    { id: 28, firstName: 'Jenny', lastName: 'Doe', salary: 150050, industry: 'Emergency Services' },
-    { id: 29, firstName: 'Phill', lastName: 'Newman', salary: 171050, industry: 'Education' },
-    { id: 30, firstName: 'John', lastName: 'Smith', salary: 122070, industry: 'Education' },
-    { id: 31, firstName: 'John', lastName: 'Doe', salary: 100050, industry: 'Education' },
-    { id: 32, firstName: 'Bill', lastName: 'Smith', salary: 200150, industry: 'Emergency Services' },
-    { id: 33, firstName: 'Jenny', lastName: 'Doe', salary: 150050, industry: 'Emergency Services' },
-    { id: 34, firstName: 'Phill', lastName: 'Newman', salary: 171050, industry: 'Education' },
-    { id: 35, firstName: 'John', lastName: 'Smith', salary: 122070, industry: 'Education' },
-    { id: 36, firstName: 'John', lastName: 'Doe', salary: 100050, industry: 'Education' },
-    { id: 37, firstName: 'Bill', lastName: 'Smith', salary: 200150, industry: 'Emergency Services' },
-    { id: 38, firstName: 'Jenny', lastName: 'Doe', salary: 150050, industry: 'Emergency Services' },
-    { id: 39, firstName: 'Phill', lastName: 'Newman', salary: 171050, industry: 'Education' },
-    { id: 40, firstName: 'John', lastName: 'Smith', salary: 122070, industry: 'Education' },
-];
+import filterData from 'util/filter';
+import {provinces} from 'util/constants';
+
+const mockData = _.map(_.range(100), (id) => ({
+    id,
+    firstName: ['Bill', 'Ted', 'Bob', 'Jenny', 'Sara', 'Anni'][_.random(0, 5)],
+    lastName: ['Smith', 'Doe', 'Newman'][_.random(0, 2)],
+    salary: _.random(100000, 1000000),
+    industry: ['Emergency', 'Education', 'Municipal'][_.random(0, 2)],
+    province: ['Ontario', 'Alberta', 'Quebec'][_.random(0, 2)],
+    year: _.random(2000, 2020)
+}));
 
 const initialState = {
     rawData: mockData,
     tableSearch: '',
-    tableFilter: {},
+    tableFilter: {
+        provinces,
+        textFilters: []
+    },
+    graphs: [[]]
 };
 
 // selectors
@@ -55,22 +30,28 @@ export const getState = (state) => state;
 export const getRawData = (state) => getState(state).rawData;
 export const getTableSearch = (state) => getState(state).tableSearch;
 export const getTableFilter = (state) => getState(state).tableFilter;
+export const getGraphs = (state) => getState(state).graphs;
+export const getGraphByIndex = (state, row, col) =>
+    _.get(getGraphs(state), `[${row}][${col}]`);
 export const getTableData = createSelector(
     [getRawData, getTableSearch, getTableFilter],
     (data, search, filter) => {
+        data = filterData(data, filter);
+
         const tokens = _.filter(
             search.toLowerCase().split(/\s+/),
             (token) => token.length > 0
         );
-
-        return tokens.length > 0
-            ? data.filter((entry) => _.every(
+        if (tokens.length > 0) {
+            data = data.filter((entry) => _.every(
                 tokens,
                 (token) => _.some(_.values(entry),
                     (val) => val.toString().toLowerCase().includes(token)
                 )
-            ))
-            : data;
+            ));
+        }
+
+        return data;
     }
 );
 
@@ -85,6 +66,12 @@ export const setTableFilter = (filter) => ({
     filter
 });
 
+export const addGraph = (graph, row) => ({
+    type: 'ADD_GRAPH',
+    graph,
+    row
+});
+
 // reducer
 export default (state = initialState, { type, ...action }) => {
     switch (type) {
@@ -96,6 +83,17 @@ export default (state = initialState, { type, ...action }) => {
         case 'SET_TABLE_FILTER': return {
             ...state,
             tableFilter: action.filter
+        };
+
+        case 'ADD_GRAPH': return {
+            ...state,
+            graphs: action.row >= state.graphs.length
+                ? [...state.graphs, [action.graph]]
+                : _.map(state.graphs, (graphRow, idx) =>
+                    (!action.row && idx === (state.graphs.length - 1)) || action.row === idx
+                        ? [...graphRow, action.graph]
+                        : graphRow
+            )
         };
 
         default: return {

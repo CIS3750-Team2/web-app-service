@@ -1,34 +1,18 @@
 import React from 'react';
 import _ from 'lodash';
 
+import {getTableColumns} from 'util/columns';
+
 import {Table} from 'antd';
 
-const columns = {
-    'firstName': 'First Name',
-    'lastName': 'Last Name',
-    'salary': 'Salary',
-    'industry': 'Industry'
-};
-const columnKeys = _.keys(columns);
-
-const getTableColumns = (data) => (
-    _.chain(data)
-        .map((row) => _.keys(row))
-        .flatten()
-        .uniq()
-        .without('id')
-        .sortBy()
-        .sortBy((dataIndex) => columns[dataIndex]
-            ? columnKeys.indexOf(dataIndex)
-            : columnKeys.length
-        )
-        .map((dataIndex) => ({
-            title: columns[dataIndex] || dataIndex,
-            dataIndex,
-            sortDirections: ['descend', 'ascend'],
-            sorter: (a, b) => a[dataIndex] > b[dataIndex] ? 1 : -1
-        }))
-        .value()
+const getColumnData = (data) => _.map(
+    getTableColumns(data),
+    ({ id, label }) => ({
+        title: label,
+        dataIndex: id,
+        sortDirections: ['descend', 'ascend'],
+        sorter: (a, b) => a[id] > b[id] ? 1 : -1
+    })
 );
 
 const DataTable = ({ data, ...props }) => (
@@ -36,7 +20,7 @@ const DataTable = ({ data, ...props }) => (
         <Table
             dataSource={data}
             bordered={true}
-            columns={getTableColumns(data)}
+            columns={getColumnData(data)}
             rowKey='id'
             size='middle'
         />

@@ -22,7 +22,7 @@ const initialState = {
         provinces,
         textFilters: []
     },
-    graphs: [[]]
+    graphs: []
 };
 
 // selectors
@@ -87,13 +87,17 @@ export default (state = initialState, { type, ...action }) => {
 
         case 'ADD_GRAPH': return {
             ...state,
-            graphs: action.row >= state.graphs.length
+            graphs: (
+                action.row == null
+                || state.graphs.length === 0
+                || (action.row || -1) >= state.graphs.length
+            )
                 ? [...state.graphs, [action.graph]]
                 : _.map(state.graphs, (graphRow, idx) =>
-                    (!action.row && idx === (state.graphs.length - 1)) || action.row === idx
+                    (action.row == null && idx === (state.graphs.length - 1)) || action.row === idx
                         ? [...graphRow, action.graph]
                         : graphRow
-            )
+                )
         };
 
         default: return {

@@ -1,0 +1,34 @@
+.visualize-view {
+  .graph-row {
+    height: 350px;
+    margin-bottom: 24px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    > .ant-card-body {
+      height: 100%;
+      display: flex;
+      flex-flow: row nowrap;
+      overflow-x: auto;
+      margin: 0 32px;
+      padding: 24px 0;
+    }
+
+    .graph-row-item {
+      flex: 0 0 auto;
+      margin-right: 24px;
+      width: 300px;
+    }
+
+    .graph-row-add-button {
+      height: 100%;
+      width: 100px;
+      margin-right: 24px;
+      line-height: 252px;
+      text-align: center;
+      font-size: 34px;
+    }
+  }
+}

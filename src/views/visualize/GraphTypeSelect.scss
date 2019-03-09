@@ -1,0 +1,15 @@
+.graph-type-select {
+  .graph-type-row {
+    margin-bottom: 12px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .graph-type-button {
+      height: 147px;
+      width: 147px;
+      text-align: center;
+    }
+  }
+}

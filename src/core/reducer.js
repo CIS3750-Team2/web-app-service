@@ -3,6 +3,7 @@ import {createSelector} from 'reselect';
 import _ from 'lodash';
 
 import filterData from 'util/filter';
+import {getTableColumns} from 'util/columns';
 import {provinces} from 'util/constants';
 
 const mockData = _.map(_.range(100), (id) => ({
@@ -53,6 +54,10 @@ export const getTableData = createSelector(
 
         return data;
     }
+);
+export const getAllFields = createSelector(
+    [getRawData],
+    getTableColumns
 );
 
 // action-creators

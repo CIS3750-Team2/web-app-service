@@ -2,10 +2,8 @@ import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import {getTableColumns} from 'util/columns';
 import {
     getTableFilter,
-    getRawData,
     setTableFilter
 } from 'core/reducer';
 
@@ -16,13 +14,12 @@ import {Button} from "antd";
 
 const FilterDataModal = useModals(connect(
     (state) => ({
-        tableFilter: getTableFilter(state),
-        fields: getTableColumns(getRawData(state))
+        tableFilter: getTableFilter(state)
     }),
     (dispatch) => bindActionCreators({
         setTableFilter
     }, dispatch)
-)(({ tableFilter, fields, setTableFilter, closeModal }) => {
+)(({ tableFilter, setTableFilter, closeModal }) => {
     const [filter, setFilter] = useState(tableFilter);
     const onSave = () => {
         setTableFilter(filter);
@@ -45,7 +42,6 @@ const FilterDataModal = useModals(connect(
             <DataFilter
                 onChange={setFilter}
                 filter={filter}
-                fields={fields}
             />
         </>
     );

@@ -1,6 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
+
+import {getAllFields} from 'core/reducer';
+import {provinces} from 'util/constants';
 
 import {
     Form,
@@ -15,8 +19,6 @@ import {
     Tooltip
 } from 'antd';
 import YearPicker from 'widgets/YearPicker';
-
-import {provinces} from 'util/constants';
 
 import './DataFilter.scss';
 
@@ -72,7 +74,11 @@ const DataFilter = Form.create({
         changed,
         values
     ) => onChange(formatFilter(values))
-})(({
+})(connect(
+    (state) => ({
+        fields: getAllFields(state)
+    })
+)(({
     form: { getFieldDecorator, getFieldValue, getFieldsValue },
     onChange,
     fields = []
@@ -279,6 +285,6 @@ const DataFilter = Form.create({
             </Button>
         </Form>
     );
-});
+}));
 
 export default DataFilter;

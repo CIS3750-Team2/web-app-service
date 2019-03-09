@@ -3,3 +3,8 @@ export const provinces = [
     'Alberta',
     'Quebec'
 ];
+
+export const emptyGraph = {
+    type: 'line',
+    filter: { provinces }
+};

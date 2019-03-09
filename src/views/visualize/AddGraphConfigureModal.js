@@ -3,8 +3,10 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 import {addGraph} from 'core/reducer';
+import {emptyGraph} from 'util/constants';
 
 import {ModalProps, useModals} from 'util/ModalProvider';
+import GraphConfigure from './GraphConfigure';
 import AddGraphTypeModal from './AddGraphTypeModal';
 
 const AddGraphConfigureModal = useModals(connect(
@@ -14,6 +16,7 @@ const AddGraphConfigureModal = useModals(connect(
     }, dispatch)
 )(({ openModal, row, type, addGraph }) => {
     const [graphData, setGraphData] = useState({
+        ...emptyGraph,
         type
     });
 
@@ -35,6 +38,8 @@ const AddGraphConfigureModal = useModals(connect(
                     addGraph(graphData, row);
                 }}
             />
+
+            <GraphConfigure data={graphData} onChange={setGraphData}/>
         </>
     );
 }));

@@ -3,9 +3,13 @@ import {withRouter} from 'react-router-dom';
 
 import {Menu} from 'antd';
 
+import logo from 'sundial_logo.png';
+
 const Header = withRouter(({location, history}) => (
     <>
-        <div className='logo'></div>
+        <div className='logo'>
+            <img src={logo}/>
+        </div>
         <Menu
             onClick={({key}) => history.push(`/${key}`)}
             mode='horizontal'

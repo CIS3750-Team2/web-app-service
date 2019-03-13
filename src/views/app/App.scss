@@ -5,6 +5,17 @@
     line-height: 48px;
     height: 48px;
 
+    .logo {
+      float: left;
+      margin-right: 50px;
+
+      > img {
+        padding: 4px;
+        width: auto;
+        height: 40px;
+      }
+    }
+
     .app-menu {
       line-height: 48px;
       height: 48px;

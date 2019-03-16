@@ -1,5 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {Redirect, Route, Switch} from 'react-router-dom';
+
+import {getRawData, loadData} from 'core/reducer';
 
 import {Layout} from 'antd';
 import AboutView from 'views/about';
@@ -10,26 +14,42 @@ import AppFooter from './Footer';
 
 import './App.scss';
 
-const App = () => (
-    <Layout id='app-layout'>
-        <Layout.Header>
-            <AppHeader/>
-        </Layout.Header>
+const App = connect(
+    (state) => ({
+        rawData: getRawData(state)
+    }),
+    (dispatch) => bindActionCreators({
+        loadData
+    }, dispatch)
+)(({ rawData, loadData }) => {
+    useEffect(() => {
+        // TODO: Uncomment this
+        // if (rawData.length === 0) {
+        //     loadData();
+        // }
+    });
 
-        <Layout.Content>
-            <Switch>
-                <Route path="/about" exact component={AboutView}/>
-                <Route path="/data" exact component={DataView}/>
-                <Route path="/visualize" exact component={VisualizeView}/>
-                { /* more routes go here */ }
-                <Redirect to="/about"/>
-            </Switch>
-        </Layout.Content>
+    return (
+        <Layout id='app-layout'>
+            <Layout.Header>
+                <AppHeader/>
+            </Layout.Header>
 
-        <Layout.Footer>
-            <AppFooter/>
-        </Layout.Footer>
+            <Layout.Content>
+                <Switch>
+                    <Route path="/about" exact component={AboutView}/>
+                    <Route path="/data" exact component={DataView}/>
+                    <Route path="/visualize" exact component={VisualizeView}/>
+                    { /* more routes go here */ }
+                    <Redirect to="/about"/>
+                </Switch>
+            </Layout.Content>
+
+            <Layout.Footer>
+                <AppFooter/>
+            </Layout.Footer>
         </Layout>
-);
+    );
+});
 
 export default App;

@@ -2,6 +2,7 @@ import React from 'react';
 import {createSelector} from 'reselect';
 import _ from 'lodash';
 
+import API from 'core/api';
 import filterData from 'util/filter';
 import {getTableColumns} from 'util/columns';
 import {provinces} from 'util/constants';
@@ -17,7 +18,7 @@ const mockData = _.map(_.range(100), (id) => ({
 }));
 
 const initialState = {
-    rawData: mockData,
+    rawData: [],
     tableSearch: '',
     tableFilter: {
         provinces,
@@ -77,6 +78,17 @@ export const addGraph = (graph, row) => ({
     row
 });
 
+export const setRawData = (data) => ({
+    type: 'SET_RAW_DATA',
+    data
+});
+
+export const loadData = (year, province) => async (dispatch) => {
+    const data = await API.getData(year, province);
+    dispatch(setRawData(data));
+    return data;
+};
+
 // reducer
 export default (state = initialState, { type, ...action }) => {
     switch (type) {
@@ -103,6 +115,11 @@ export default (state = initialState, { type, ...action }) => {
                         ? [...graphRow, action.graph]
                         : graphRow
                 )
+        };
+
+        case 'SET_RAW_DATA': return {
+            ...state,
+            rawData: action.data.length > 0 ? action.data : state.rawData
         };
 
         default: return {

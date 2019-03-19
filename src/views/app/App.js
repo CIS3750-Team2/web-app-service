@@ -14,42 +14,26 @@ import AppFooter from './Footer';
 
 import './App.scss';
 
-const App = connect(
-    (state) => ({
-        rawData: getRawData(state)
-    }),
-    (dispatch) => bindActionCreators({
-        loadData
-    }, dispatch)
-)(({ rawData, loadData }) => {
-    useEffect(() => {
-        // TODO: Uncomment this
-        // if (rawData.length === 0) {
-        //     loadData();
-        // }
-    });
+const App = () => (
+    <Layout id='app-layout'>
+        <Layout.Header>
+            <AppHeader/>
+        </Layout.Header>
 
-    return (
-        <Layout id='app-layout'>
-            <Layout.Header>
-                <AppHeader/>
-            </Layout.Header>
+        <Layout.Content>
+            <Switch>
+                <Route path="/about" exact component={AboutView}/>
+                <Route path="/data" exact component={DataView}/>
+                <Route path="/visualize" exact component={VisualizeView}/>
+                { /* more routes go here */ }
+                <Redirect to="/about"/>
+            </Switch>
+        </Layout.Content>
 
-            <Layout.Content>
-                <Switch>
-                    <Route path="/about" exact component={AboutView}/>
-                    <Route path="/data" exact component={DataView}/>
-                    <Route path="/visualize" exact component={VisualizeView}/>
-                    { /* more routes go here */ }
-                    <Redirect to="/about"/>
-                </Switch>
-            </Layout.Content>
-
-            <Layout.Footer>
-                <AppFooter/>
-            </Layout.Footer>
-        </Layout>
-    );
-});
+        <Layout.Footer>
+            <AppFooter/>
+        </Layout.Footer>
+    </Layout>
+);
 
 export default App;

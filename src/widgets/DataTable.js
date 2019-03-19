@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import _ from 'lodash';
 
+import API from 'core/api';
 import {getTableColumns} from 'util/columns';
 
 import {Table} from 'antd';
@@ -15,16 +16,26 @@ const getColumnData = (data) => _.map(
     })
 );
 
-const DataTable = ({ data, ...props }) => (
-    <div {...props}>
-        <Table
-            dataSource={data}
-            bordered={true}
-            columns={getColumnData(data)}
-            rowKey='id'
-            size='middle'
-        />
-    </div>
-);
+const DataTable = ({ filter, search = '', ...props }) => {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        API.loadData({ filter, search }).then((res) => {
+            if (!_.isEqual(data, res)) setData(res);
+        })
+    });
+
+    return (
+        <div {...props}>
+            <Table
+                dataSource={data}
+                bordered={true}
+                columns={getColumnData(data)}
+                rowKey='_id'
+                size='middle'
+            />
+        </div>
+    );
+};
 
 export default DataTable;

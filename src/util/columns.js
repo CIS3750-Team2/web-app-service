@@ -5,7 +5,13 @@ export const columns = {
     'firstName': 'First Name',
     'lastName': 'Last Name',
     'salary': 'Salary',
-    'industry': 'Industry'
+    'industry': 'Industry',
+    'employer': 'Employer',
+    'taxableBenefits': 'Benefits',
+    'title': 'Job Title',
+    'year': 'Year',
+    'province': 'Province',
+    'sector': 'Sector'
 };
 export const columnKeys = _.keys(columns);
 
@@ -14,7 +20,7 @@ export const getTableColumns = defaultMemoize((data) => (
         .map((row) => _.keys(row))
         .flatten()
         .uniq()
-        .without('id')
+        .without('_id')
         .sortBy()
         .sortBy((id) => columns[id]
             ? columnKeys.indexOf(id)

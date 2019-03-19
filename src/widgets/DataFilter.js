@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
 
-import {getAllFields} from 'core/reducer';
 import {provinces} from 'util/constants';
 
 import {
@@ -76,7 +75,7 @@ const DataFilter = Form.create({
     ) => onChange(formatFilter(values))
 })(connect(
     (state) => ({
-        fields: getAllFields(state)
+        fields: [{ id: 'name', label: 'Name' }] // TODO: Populate this
     })
 )(({
     form: { getFieldDecorator, getFieldValue, getFieldsValue },

@@ -1,17 +1,19 @@
 import LRUCache from 'lru-cache';
+import _ from 'lodash';
 import {serialize} from 'util/filter';
 
 export const errorHandler = (response) =>
     response.ok ?
         Promise.resolve(response) :
         Promise.reject(Error(`${response.status}: ${response.statusText}`));
-
 export const jsonHandler = (response) => response.json();
+export const textHandler = (response) => response.text();
 
 const listHandler = (list) => list.map((entry) => {
     delete entry.original;
     return entry;
 });
+const countHandler = (count) => parseInt(count) || 0;
 
 const defaultQuery = {
     start: 0,
@@ -22,9 +24,12 @@ const defaultQuery = {
 };
 
 class API {
-    cache = new LRUCache({
+    listCache = new LRUCache({
         max: 5000,
         length: (items) => items ? items.length : 1
+    });
+    countCache = new LRUCache({
+        max: 500
     });
 
     serializeQuery = ({
@@ -34,30 +39,51 @@ class API {
         sortOrder = defaultQuery.sortOrder,
         sortField = defaultQuery.sortField,
         filter = defaultQuery.filter
-    }) => `start=${start}&limit=${limit}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&filter=${serialize(filter)}`;
+    } = defaultQuery) =>
+        `start=${start}&limit=${limit}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&filter=${serialize(filter)}`;
 
     fetchList = async (query = defaultQuery) => {
-        query = { ...defaultQuery, ...query };
-
         const queryKey = this.serializeQuery(query);
         const data = await fetch(`api/list?${queryKey}`)
             .then(errorHandler).then(jsonHandler).then(listHandler);
 
         if (data) {
-            this.cache.set(queryKey, data);
+            this.listCache.set(queryKey, data);
         }
 
         return data;
     };
 
+    fetchCount = async (query = defaultQuery) => {
+        const queryKey = this.serializeQuery(
+            _.omit(query, ['start', 'limit', 'sortField', 'sortOrder'])
+        );
+        const count = await fetch(`api/count?${queryKey}`)
+            .then(errorHandler).then(textHandler).then(countHandler);
+
+        this.countCache.set(queryKey, count);
+        return count;
+    };
+
     loadData = async (query = defaultQuery) => {
-        query = { ...defaultQuery, ...query };
         const queryKey = this.serializeQuery(query);
 
-        if (this.cache.has(queryKey)) {
-            return this.cache.get(queryKey);
+        if (this.listCache.has(queryKey)) {
+            return this.listCache.get(queryKey);
         } else {
             return this.fetchList(query);
+        }
+    };
+
+    loadCount = async (query = defaultQuery) => {
+        const queryKey = this.serializeQuery(
+            _.omit(query, ['start', 'limit', 'sortField', 'sortOrder'])
+        );
+
+        if (this.countCache.has(queryKey)) {
+            return this.countCache.get(queryKey);
+        } else {
+            return this.fetchCount(query);
         }
     };
 }

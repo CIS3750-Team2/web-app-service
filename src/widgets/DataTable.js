@@ -4,7 +4,7 @@ import _ from 'lodash';
 import API from 'core/api';
 import {getTableColumns} from 'util/columns';
 
-import {Table} from 'antd';
+import {Table, Modal} from 'antd';
 
 const getColumnData = (data) => _.map(
     getTableColumns(data),
@@ -19,7 +19,7 @@ const getColumnData = (data) => _.map(
 const DataTable = ({ filter, search = '', ...props }) => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
-    const [count, setCount] = useState(1000); // TODO: Fetch count from API
+    const [count, setCount] = useState(0);
     const [pageData, setPageData] = useState({ start: 0, limit: 10 });
     const [sortData, setSortData] = useState({});
 
@@ -28,24 +28,32 @@ const DataTable = ({ filter, search = '', ...props }) => {
         current: Math.floor(pageData.start / pageData.limit) + 1,
         pageSizeOptions: ['10', '25', '50', '100'],
         showSizeChanger: true,
-        total: count
+        total: Math.min(count, 1000)
     };
 
     useEffect(() => {
         setLoading(true);
-
-        API.loadData({
+        const query = {
             ...pageData,
             sortField: sortData.field,
             sortOrder: sortData.order && `${sortData.order}ing`,
             filter,
             search
-        }).then((res) => {
-            if (!_.isEqual(data, res)) {
-                setData(res);
+        };
+
+        Promise.all([
+            API.loadData(query),
+            API.loadCount(query)
+        ]).then((res) => {
+            if (count !== res[1] || !_.isEqual(data, res[0])) {
+                setData(res[0]);
+                setCount(res[1]);
             }
         }).catch((err) => {
             console.warn(err);
+            Modal.error({
+                content: 'Error while loading, please retry!'
+            });
         }).finally(() => {
             setLoading(false);
         });

@@ -27,8 +27,14 @@ class API {
         length: (items) => items ? items.length : 1
     });
 
-    serializeQuery = ({ start, limit, search, sortOrder, sortField, filter }) =>
-        `start=${start}&limit=${limit}&search=${search.toLowerCase()}&sortField=${sortField.toLowerCase()}&sortOrder=${sortOrder.toLowerCase()}&filter=${serialize(filter)}`;
+    serializeQuery = ({
+        start = defaultQuery.start,
+        limit = defaultQuery.limit,
+        search = defaultQuery.search,
+        sortOrder = defaultQuery.sortOrder,
+        sortField = defaultQuery.sortField,
+        filter = defaultQuery.filter
+    }) => `start=${start}&limit=${limit}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&filter=${serialize(filter)}`;
 
     fetchList = async (query = defaultQuery) => {
         query = { ...defaultQuery, ...query };

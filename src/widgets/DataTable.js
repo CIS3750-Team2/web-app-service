@@ -12,25 +12,68 @@ const getColumnData = (data) => _.map(
         title: label,
         dataIndex: id,
         sortDirections: ['descend', 'ascend'],
-        sorter: (a, b) => a[id] > b[id] ? 1 : -1
+        sorter: true
     })
 );
 
 const DataTable = ({ filter, search = '', ...props }) => {
+    const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
+    const [count, setCount] = useState(1000); // TODO: Fetch count from API
+    const [pageData, setPageData] = useState({ start: 0, limit: 10 });
+    const [sortData, setSortData] = useState({});
+
+    const pagination = {
+        pageSize: pageData.limit,
+        current: Math.floor(pageData.start / pageData.limit) + 1,
+        pageSizeOptions: ['10', '25', '50', '100'],
+        showSizeChanger: true,
+        total: count
+    };
 
     useEffect(() => {
-        API.loadData({ filter, search }).then((res) => {
-            if (!_.isEqual(data, res)) setData(res);
-        })
-    });
+        setLoading(true);
+
+        API.loadData({
+            ...pageData,
+            sortField: sortData.field,
+            sortOrder: sortData.order && `${sortData.order}ing`,
+            filter,
+            search
+        }).then((res) => {
+            if (!_.isEqual(data, res)) {
+                setData(res);
+            }
+        }).catch((err) => {
+            console.warn(err);
+        }).finally(() => {
+            setLoading(false);
+        });
+    }, [filter, search, pageData, sortData]);
+
+    const onChange = ({ current, pageSize }, filters, { field, order }) => {
+        if (pagination.current !== current || pagination.pageSize !== pageSize) {
+            setPageData({
+                limit: pageSize,
+                start: (current - 1) * pageSize
+            });
+        }
+
+        if (sortData.field !== field || sortData.order !== order) {
+            console.log(field, order);
+            setSortData({ field, order });
+        }
+    };
 
     return (
         <div {...props}>
             <Table
                 dataSource={data}
-                bordered={true}
+                loading={loading}
+                onChange={onChange}
+                pagination={pagination}
                 columns={getColumnData(data)}
+                bordered={true}
                 rowKey='_id'
                 size='middle'
             />

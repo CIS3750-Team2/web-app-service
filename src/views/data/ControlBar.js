@@ -5,8 +5,6 @@ import timeout from 'util/timeout';
 
 import {
     getTableSearch,
-    getTableData,
-    getRawData,
     setTableSearch
 } from 'core/reducer';
 

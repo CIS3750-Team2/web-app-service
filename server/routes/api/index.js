@@ -1,4 +1,4 @@
-const apiUrl = process.env.API_URL
+const apiUrl = process.env.API_SERVICE
     || (process.env.NODE_ENV === 'development'
             ? 'http://localhost:8081'
             : 'http://api.sunshinedial.com/'

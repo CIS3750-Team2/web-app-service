@@ -1,7 +1,7 @@
 export const provinces = [
-    'Ontario',
-    'Alberta',
-    'Quebec'
+    'ontario',
+    'alberta',
+    'quebec'
 ];
 
 export const emptyGraph = {

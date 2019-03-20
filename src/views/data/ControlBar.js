@@ -5,8 +5,6 @@ import timeout from 'util/timeout';
 
 import {
     getTableSearch,
-    getTableData,
-    getRawData,
     setTableSearch
 } from 'core/reducer';
 
@@ -16,6 +14,7 @@ import {message, Input, Button, Menu, Dropdown, Icon} from 'antd';
 
 import './ControlBar.scss';
 
+// TODO: Pass data here...
 const exportCsv = async (data) => {
     const hide = message.loading('Preparing export...');
 
@@ -40,14 +39,12 @@ val21,val22`;
 
 const ControlBar = useModals(connect(
     (state) => ({
-        search: getTableSearch(state),
-        tableData: getTableData(state),
-        rawData: getRawData(state)
+        search: getTableSearch(state)
     }),
     (dispatch) => bindActionCreators({
         setSearch: setTableSearch
     }, dispatch)
-)(({ search, tableData, rawData, setSearch, openModal }) => (
+)(({ search, setSearch, openModal }) => (
     <div className='control-bar'>
         <Input
             placeholder='Quick search'
@@ -66,7 +63,7 @@ const ControlBar = useModals(connect(
         </Button>
         <Dropdown overlay={
             <Menu
-                onClick={({ key }) => exportCsv(key === 'filter' ? tableData : rawData)}
+                onClick={({ key }) => exportCsv(key === 'filter' ? [] /* table data */ : [] /* raw data */)}
             >
                 <Menu.Item key='filter'>Export with filters</Menu.Item>
                 <Menu.Item key='all'>Export all data</Menu.Item>

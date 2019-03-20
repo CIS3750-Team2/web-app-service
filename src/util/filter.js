@@ -30,3 +30,12 @@ export default defaultMemoize((
             })
     )
 });
+
+export const serialize = ({ provinces, minYear, maxYear, minSalary, maxSalary, textFilters }) =>
+    JSON.stringify({
+        provinces: provinces && provinces.sort(),
+        minYear, maxYear, minSalary, maxSalary,
+        textFilters: _.sortBy((textFilters || []), ['field', 'type', 'text'])
+    });
+
+export const deserialize = (string) => JSON.parse(string);

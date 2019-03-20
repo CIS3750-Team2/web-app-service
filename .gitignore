@@ -2,7 +2,7 @@
 dist/
 
 ### Windows ###
-# Windows thumbnail cache files
+# Windows thumbnail listCache files
 Thumbs.db
 ehthumbs.db
 ehthumbs_vista.db
@@ -84,10 +84,10 @@ jspm_packages/
 # TypeScript v1 declaration files
 typings/
 
-# Optional npm cache directory
+# Optional npm listCache directory
 .npm
 
-# Optional eslint cache
+# Optional eslint listCache
 .eslintcache
 
 # Yarn Integrity file
@@ -162,6 +162,6 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
-# Android studio 3.1+ serialized cache file
+# Android studio 3.1+ serialized listCache file
 .idea/caches/build_file_checksums.ser
 

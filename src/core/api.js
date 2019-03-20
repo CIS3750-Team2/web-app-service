@@ -31,6 +31,7 @@ class API {
     countCache = new LRUCache({
         max: 500
     });
+    fieldCache = undefined;
 
     serializeQuery = ({
         start = defaultQuery.start,
@@ -84,6 +85,16 @@ class API {
             return this.countCache.get(queryKey);
         } else {
             return this.fetchCount(query);
+        }
+    };
+
+    loadFields = async () => {
+        if (this.fieldCache) {
+            return this.fieldCache;
+        } else {
+            this.fieldCache = await fetch('api/fields')
+                .then(errorHandler).then(jsonHandler);
+            return this.fieldCache;
         }
     };
 }

@@ -1,4 +1,4 @@
-import {defaultMemoize} from 'reselect';
+import API from 'core/api';
 import _ from "lodash";
 
 export const columns = {
@@ -15,10 +15,8 @@ export const columns = {
 };
 export const columnKeys = _.keys(columns);
 
-export const getTableColumns = defaultMemoize((data) => (
-    _.chain(data)
-        .map((row) => _.keys(row))
-        .flatten()
+export const getTableColumns = async () => (
+    _.chain(await API.loadFields())
         .uniq()
         .without('_id')
         .sortBy()
@@ -31,4 +29,4 @@ export const getTableColumns = defaultMemoize((data) => (
             id
         }))
         .value()
-));
+);

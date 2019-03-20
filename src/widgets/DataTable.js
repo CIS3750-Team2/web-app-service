@@ -7,7 +7,7 @@ import {getTableColumns} from 'util/columns';
 import {Table, Modal} from 'antd';
 
 const getColumnData = (data) => _.map(
-    getTableColumns(data),
+    data,
     ({ id, label }) => ({
         title: label,
         dataIndex: id,
@@ -22,6 +22,7 @@ const DataTable = ({ filter, search = '', ...props }) => {
     const [count, setCount] = useState(0);
     const [pageData, setPageData] = useState({ start: 0, limit: 10 });
     const [sortData, setSortData] = useState({});
+    const [columns, setColumns] = useState([]);
 
     const pagination = {
         pageSize: pageData.limit,
@@ -59,6 +60,12 @@ const DataTable = ({ filter, search = '', ...props }) => {
         });
     }, [filter, search, pageData, sortData]);
 
+    useEffect(() => {
+        getTableColumns().then((columns) => {
+            setColumns(getColumnData(columns));
+        });
+    }, []);
+
     const onChange = ({ current, pageSize }, filters, { field, order }) => {
         if (pagination.current !== current || pagination.pageSize !== pageSize) {
             setPageData({
@@ -68,7 +75,6 @@ const DataTable = ({ filter, search = '', ...props }) => {
         }
 
         if (sortData.field !== field || sortData.order !== order) {
-            console.log(field, order);
             setSortData({ field, order });
         }
     };
@@ -80,7 +86,7 @@ const DataTable = ({ filter, search = '', ...props }) => {
                 loading={loading}
                 onChange={onChange}
                 pagination={pagination}
-                columns={getColumnData(data)}
+                columns={columns}
                 bordered={true}
                 rowKey='_id'
                 size='middle'

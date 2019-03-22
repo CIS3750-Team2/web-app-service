@@ -31,6 +31,7 @@ class API {
     countCache = new LRUCache({
         max: 500
     });
+    fieldCache = undefined;
 
     serializeQuery = ({
         start = defaultQuery.start,
@@ -96,6 +97,16 @@ class API {
 
     exportAllCSV = async () => {
         return `api/export`;
+    };
+
+    loadFields = async () => {
+        if (this.fieldCache) {
+            return this.fieldCache;
+        } else {
+            this.fieldCache = await fetch('api/fields')
+                .then(errorHandler).then(jsonHandler);
+            return this.fieldCache;
+        }
     };
 
 }

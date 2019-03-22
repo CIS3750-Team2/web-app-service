@@ -1,6 +1,6 @@
 import LRUCache from 'lru-cache';
 import _ from 'lodash';
-import {serialize} from 'util/filter';
+import { serialize } from 'util/filter';
 
 export const errorHandler = (response) =>
     response.ok ?
@@ -86,6 +86,18 @@ class API {
             return this.fetchCount(query);
         }
     };
+
+    exportFilteredCSV = async (query = defaultQuery) => {
+        const queryKey = this.serializeQuery(
+            _.omit(query, ['start', 'limit', 'sortField', 'sortOrder'])
+        );
+        return `api/export?${queryKey}`;
+    };
+
+    exportAllCSV = async () => {
+        return `api/export`;
+    };
+
 }
 
 const instance = new API();

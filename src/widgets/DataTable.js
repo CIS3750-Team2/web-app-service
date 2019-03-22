@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 
 import API from 'core/api';
-import {getTableColumns} from 'util/columns';
+import { getTableColumns } from 'util/columns';
 
-import {Table, Modal} from 'antd';
+import { Table, Modal } from 'antd';
 
 const getColumnData = (data) => _.map(
     getTableColumns(data),

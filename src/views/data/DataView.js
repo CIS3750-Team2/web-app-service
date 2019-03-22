@@ -17,7 +17,7 @@ const DataView = connect(
 )(({ filter, search }) => (
     <div className='data-view'>
         <Card>
-            <ControlBar/>
+            <ControlBar filter={filter}/>
             <DataTable filter={filter} search={search}/>
         </Card>
     </div>

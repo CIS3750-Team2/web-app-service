@@ -36,40 +36,45 @@ const ControlBar = useModals(connect(
     (dispatch) => bindActionCreators({
         setSearch: setTableSearch
     }, dispatch)
-)(({filter, search, setSearch, openModal}) => (
-    <div className='control-bar'>
-        <Input
-            placeholder='Quick search'
-            className='quick-search'
-            allowClear={true}
-            value={search}
-            onChange={({ target: { value } }) => setSearch(value)}
-        />
+)(({filter, search, setSearch, openModal}) => {
+    const debouncedSearch = _.debounce(setSearch, 500);
+    const onSearchChange = ({ target: { value } }) => debouncedSearch(value);
 
-        <Button
-            type='primary'
-            icon='tool'
-            onClick={() => openModal(<FilterDataModal />)}
-        >
-            Filter...
-        </Button>
-        <Dropdown overlay={
-            <Menu
-                onClick={({key}) => key === 'filter' ? exportCSV(filter, search) : exportCSV()}
-            >
-                <Menu.Item key='filter'>Export with filters</Menu.Item>
-                <Menu.Item key='all'>Export all data</Menu.Item>
-            </Menu>
-        }>
+    return (
+        <div className='control-bar'>
+            <Input
+                placeholder='Quick search'
+                className='quick-search'
+                allowClear={true}
+                defaultValue={search}
+                onChange={onSearchChange}
+            />
+
             <Button
                 type='primary'
-                icon='download'
+                icon='tool'
+                onClick={() => openModal(<FilterDataModal />)}
             >
-                Export CSV
-                <Icon type="down" />
+                Filter...
             </Button>
-        </Dropdown>
-    </div>
-)));
+            <Dropdown overlay={
+                <Menu
+                    onClick={({key}) => key === 'filter' ? exportCSV(filter, search) : exportCSV()}
+                >
+                    <Menu.Item key='filter'>Export with filters</Menu.Item>
+                    <Menu.Item key='all'>Export all data</Menu.Item>
+                </Menu>
+            }>
+                <Button
+                    type='primary'
+                    icon='download'
+                >
+                    Export CSV
+                    <Icon type="down" />
+                </Button>
+            </Dropdown>
+        </div>
+    );
+}));
 
 export default ControlBar;

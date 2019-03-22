@@ -58,7 +58,7 @@ const ControlBar = useModals(connect(
         </Button>
         <Dropdown overlay={
             <Menu
-                onClick={({key}) => exportCSV(key === 'filter' ? exportCSV(filter, search) : exportCSV())}
+                onClick={({key}) => key === 'filter' ? exportCSV(filter, search) : exportCSV()}
             >
                 <Menu.Item key='filter'>Export with filters</Menu.Item>
                 <Menu.Item key='all'>Export all data</Menu.Item>

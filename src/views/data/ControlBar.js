@@ -12,7 +12,7 @@ import {
 
 import API from 'core/api';
 
-import { useModals } from 'util/ModalProvider';
+import {useModals} from 'util/ModalProvider';
 import FilterDataModal from './FilterDataModal';
 import {message, Input, Button, Menu, Dropdown, Icon} from 'antd';
 

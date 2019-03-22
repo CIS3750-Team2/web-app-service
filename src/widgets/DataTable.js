@@ -16,18 +16,28 @@ const getColumnData = (data) => _.map(
     })
 );
 
-const DataTable = ({ filter, search = '', ...props }) => {
+const DataTable = ({
+    filter,
+    search = '',
+    pageSizeOptions = ['10', '25', '50', '100'],
+    defaultPageSize = 10,
+    tableProps,
+    ...props
+}) => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [count, setCount] = useState(0);
-    const [pageData, setPageData] = useState({ start: 0, limit: 10 });
+    const [pageData, setPageData] = useState({
+        start: 0,
+        limit: defaultPageSize
+    });
     const [sortData, setSortData] = useState({});
     const [columns, setColumns] = useState([]);
 
     const pagination = {
         pageSize: pageData.limit,
         current: Math.floor(pageData.start / pageData.limit) + 1,
-        pageSizeOptions: ['10', '25', '50', '100'],
+        pageSizeOptions,
         showSizeChanger: true,
         total: Math.min(count, 1000)
     };
@@ -82,14 +92,15 @@ const DataTable = ({ filter, search = '', ...props }) => {
     return (
         <div {...props}>
             <Table
+                bordered={true}
+                size='middle'
+                {...tableProps}
                 dataSource={data}
                 loading={loading}
                 onChange={onChange}
                 pagination={pagination}
                 columns={columns}
-                bordered={true}
                 rowKey='_id'
-                size='middle'
             />
         </div>
     );

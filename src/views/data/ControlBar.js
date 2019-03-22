@@ -20,7 +20,6 @@ import './ControlBar.scss';
 
 // TODO: Pass data here...
 const exportCSV = async (filter, search) => {
-    const hide = message.loading('Preparing export...');
     let query;
     if (filter || search) {
         query = { filter, search };

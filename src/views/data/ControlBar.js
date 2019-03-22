@@ -28,7 +28,6 @@ const exportCSV = async (filter, search) => {
     // go to new page with url as query
     window.open(API.getExportUrl(query), '_blank');
     hide();
-    message.success('Export ready. Downloading...');
 };
 
 const ControlBar = useModals(connect(

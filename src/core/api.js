@@ -1,6 +1,6 @@
 import LRUCache from 'lru-cache';
 import _ from 'lodash';
-import { serialize } from 'util/filter';
+import {serialize} from 'util/filter';
 
 export const errorHandler = (response) =>
     response.ok ?
@@ -88,24 +88,14 @@ class API {
         }
     };
 
-    exportFilteredCSV = async (query = defaultQuery) => {
-        const queryKey = this.serializeQuery(
-            _.omit(query, ['start', 'limit', 'sortField', 'sortOrder'])
-        );
-        return `api/export?${queryKey}`;
-    };
-
-    exportAllCSV = async () => {
-        return `api/export`;
-    };
-
-    loadFields = async () => {
-        if (this.fieldCache) {
-            return this.fieldCache;
+    getExportUrl = (query) => {
+        if (query) {
+            const queryKey = this.serializeQuery(
+                _.omit(query, ['start', 'limit', 'sortField', 'sortOrder'])
+            );
+            return `api/export?${queryKey}`;
         } else {
-            this.fieldCache = await fetch('api/fields')
-                .then(errorHandler).then(jsonHandler);
-            return this.fieldCache;
+            return `api/export`;
         }
     };
 

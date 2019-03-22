@@ -1,6 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import timeout from 'util/timeout';
 import _ from 'lodash';
 
@@ -14,20 +14,19 @@ import API from 'core/api';
 
 import { useModals } from 'util/ModalProvider';
 import FilterDataModal from './FilterDataModal';
-import { message, Input, Button, Menu, Dropdown, Icon } from 'antd';
+import {message, Input, Button, Menu, Dropdown, Icon} from 'antd';
 
 import './ControlBar.scss';
 
 // TODO: Pass data here...
-const exportCSV = async (filter, search, dataIsFiltered) => {
+const exportCSV = async (filter, search) => {
     const hide = message.loading('Preparing export...');
-    // go to new page with url as query
-    if (dataIsFiltered) {
-        const tableQuery = { filter: filter, search: search }
-        window.open(await API.exportFilteredCSV(tableQuery), '_blank');
-    } else {
-        window.open(await API.exportAllCSV(), '_blank');
+    let query;
+    if (filter || search) {
+        query = { filter, search };
     }
+    // go to new page with url as query
+    window.open(API.getExportUrl(query), '_blank');
     hide();
     message.success('Export ready. Downloading...');
 };
@@ -40,7 +39,7 @@ const ControlBar = useModals(connect(
     (dispatch) => bindActionCreators({
         setSearch: setTableSearch
     }, dispatch)
-)(({ filter, search, setSearch, openModal }) => (
+)(({filter, search, setSearch, openModal}) => (
     <div className='control-bar'>
         <Input
             placeholder='Quick search'
@@ -59,7 +58,7 @@ const ControlBar = useModals(connect(
         </Button>
         <Dropdown overlay={
             <Menu
-                onClick={({ key }) => exportCSV(filter, search, key === 'filter')}
+                onClick={({key}) => exportCSV(key === 'filter' ? exportCSV(filter, search) : exportCSV())}
             >
                 <Menu.Item key='filter'>Export with filters</Menu.Item>
                 <Menu.Item key='all'>Export all data</Menu.Item>

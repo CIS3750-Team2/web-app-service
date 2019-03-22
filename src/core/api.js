@@ -88,6 +88,16 @@ class API {
         }
     };
 
+    loadFields = async () => {
+        if (this.fieldCache) {
+            return this.fieldCache;
+        } else {
+            this.fieldCache = await fetch('api/fields')
+                .then(errorHandler).then(jsonHandler);
+            return this.fieldCache;
+        }
+    };
+
     getExportUrl = (query) => {
         if (query) {
             const queryKey = this.serializeQuery(

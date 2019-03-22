@@ -1,7 +1,11 @@
 import React from 'react';
 
+import './Graph.scss';
+
 const Graph = (data) => (
-    null
+    <div className='graph'>
+
+    </div>
 );
 
 export default Graph;

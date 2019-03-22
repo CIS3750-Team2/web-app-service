@@ -38,6 +38,11 @@ const VisualizeView = useModals(connect(
                             className='graph-row-item'
                             graph={graph}
                             key={graphIdx}
+                            onExpand={null}
+                            onRemove={null}
+                            onChangeType={null}
+                            onConfigure={null}
+                            onDuplicate={null}
                         />
                     ))}
 

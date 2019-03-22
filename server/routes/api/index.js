@@ -7,5 +7,6 @@ const apiUrl = process.env.API_SERVICE
 module.exports = (app) => {
     app.get('/api/list', require('./list')(apiUrl));
     app.get('/api/count', require('./count')(apiUrl));
+    app.get('/api/export', require('./export')(apiUrl));
     app.get('/api/fields', require('./fields')(apiUrl));
 };

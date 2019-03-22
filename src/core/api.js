@@ -88,15 +88,17 @@ class API {
         }
     };
 
-    loadFields = async () => {
-        if (this.fieldCache) {
-            return this.fieldCache;
+    getExportUrl = (query) => {
+        if (query) {
+            const queryKey = this.serializeQuery(
+                _.omit(query, ['start', 'limit', 'sortField', 'sortOrder'])
+            );
+            return `api/export?${queryKey}`;
         } else {
-            this.fieldCache = await fetch('api/fields')
-                .then(errorHandler).then(jsonHandler);
-            return this.fieldCache;
+            return `api/export`;
         }
     };
+
 }
 
 const instance = new API();

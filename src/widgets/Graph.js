@@ -4,7 +4,7 @@ import './Graph.scss';
 
 const Graph = (data) => (
     <div className='graph'>
-
+        {data.type}
     </div>
 );
 

@@ -73,7 +73,7 @@ module.exports = (env = {}) => ({
             filename: 'index.html',
             hash: env.NODE_ENV !== 'development',
             template: 'root.html',
-            //favicon: 'assets/favicon.ico'
+            favicon: 'assets/favicon.ico'
         }),
     ],
 });

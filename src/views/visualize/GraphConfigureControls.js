@@ -94,6 +94,7 @@ const GraphConfigureControls = Form.create({
                         <Select.Option key='median'>Median</Select.Option>
                         <Select.Option key='mode'>Mode</Select.Option>
                         <Select.Option key='std'>Standard Deviation</Select.Option>
+                        <Select.Option key='var'>Variance</Select.Option>
                     </Select>
                 )}
             </Form.Item>

@@ -11,6 +11,12 @@ export const textHandler = (response) => response.text();
 
 const listHandler = (list) => list.map((entry) => {
     delete entry.original;
+    if (entry.salary) {
+        entry.salary = `$${entry.salary}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    if (entry.taxableBenefits) {
+        entry.taxableBenefits = `$${entry.taxableBenefits}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
     return entry;
 });
 const countHandler = (count) => parseInt(count) || 0;

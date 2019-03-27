@@ -95,6 +95,7 @@ const GraphConfigureControls = Form.create({
                         <Select.Option key='max'>Maximum</Select.Option>
                         <Select.Option key='std'>Standard Deviation</Select.Option>
                         <Select.Option key='sum'>Total</Select.Option>
+                        <Select.Option key='count'>Count</Select.Option>
                     </Select>
                 )}
             </Form.Item>

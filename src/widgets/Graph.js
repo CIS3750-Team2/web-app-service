@@ -14,7 +14,7 @@ import {
     ArcSeries,
     Hint
 } from 'react-vis';
-import {Modal, Spin, Card} from 'antd';
+import {Modal, Spin} from 'antd';
 
 import './Graph.scss';
 

@@ -75,20 +75,27 @@ const Graph = (data) => {
     const seriesProps = {};
 
     if (data.type === 'bar') {
-        seriesProps.onNearestX = (value, { index }) => setHighlight(index);
-        seriesProps.data = _.map(plotData, ({ x, ...rest }) => ({
-            ...rest,
-            x,
-            color: x === highlight ? 0 : 1
+        seriesProps.onNearestX = ({ y }, { index }) => setHighlight({ index, y });
+        seriesProps.data = _.map(plotData, (value) => ({
+            ...value,
+            color: highlight && value.x === highlight.index ? 0 : 1
         }));
         if (highlight !== undefined) {
-            extra = (
-                <Hint value={{ x: highlight, y: 0 }}>
-                    <Card size='small'>
-                        {fieldData[highlight]}
-                    </Card>
-                </Hint>
-            );
+            extra = <Hint
+                value={{ x: highlight.index, y: 0 }}
+                format={({ x }) => [{ title: fieldData[x], value: highlight.y }]}
+            />;
+        }
+    } else if (data.type === 'scatter') {
+        seriesProps.onNearestXY = (value) => setHighlight(value);
+        if (highlight !== undefined) {
+            extra = <Hint
+                value={highlight}
+                format={({ x, y }) => [
+                    { title: data.xField, value: fieldData[x] },
+                    { title: data.yField, value: y }
+                ]}
+            />;
         }
     }
 

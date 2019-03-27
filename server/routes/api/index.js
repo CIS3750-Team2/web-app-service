@@ -9,4 +9,5 @@ module.exports = (app) => {
     app.get('/api/count', require('./count')(apiUrl));
     app.get('/api/export', require('./export')(apiUrl));
     app.get('/api/fields', require('./fields')(apiUrl));
+    app.get('/api/plot/:yField/:yMethod/vs/:xField', require('./plot')(apiUrl));
 };

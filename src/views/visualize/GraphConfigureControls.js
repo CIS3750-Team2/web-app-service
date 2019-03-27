@@ -41,7 +41,7 @@ const GraphConfigureControls = Form.create({
         const update = {};
         if (!xField || xField.length === 0) update.xField = _.get(fields, [0, 'id']);
         if (!yField || yField.length === 0) update.yField = _.get(fields, [0, 'id']);
-        if (!yMethod || yMethod.length === 0) update.yMethod = 'mean';
+        if (!yMethod || yMethod.length === 0) update.yMethod = 'avg';
 
         if (_.keys(update).length > 0) setFieldsValue(update);
     }, [xField, yField, yMethod, fields]);

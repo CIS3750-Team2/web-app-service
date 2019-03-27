@@ -37,6 +37,10 @@ class API {
     countCache = new LRUCache({
         max: 500
     });
+    plotCache = new LRUCache({
+        max: 100000,
+        length: (points) => points ? points.length : 1
+    });
     fieldCache = undefined;
 
     serializeQuery = ({
@@ -48,6 +52,14 @@ class API {
         filter = defaultQuery.filter
     } = defaultQuery) =>
         `start=${start}&limit=${limit}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&filter=${serialize(filter)}`;
+
+    serializePlotUrl = ({ yField, xField, yMethod, filter}) => {
+        let url = `api/plot/${yField}/${yMethod}/vs/${xField}`;
+        if (filter) {
+            url += `?filter=${serialize(filter)}`;
+        }
+        return url;
+    };
 
     fetchList = async (query = defaultQuery) => {
         const queryKey = this.serializeQuery(query);
@@ -70,6 +82,22 @@ class API {
 
         this.countCache.set(queryKey, count);
         return count;
+    };
+
+    fetchPlot = async (plotData) => {
+        const { yField, xField, yMethod } = plotData;
+        if (!yField || !yField.length || !xField || !xField.length || !yMethod || !yMethod.length) {
+            return [];
+        }
+
+        const url = this.serializePlotUrl(plotData);
+        const plots = await fetch(url).then(errorHandler).then(jsonHandler);
+
+        if (plots) {
+            this.plotCache.set(url, plots);
+        }
+
+        return plots;
     };
 
     loadData = async (query = defaultQuery) => {
@@ -104,6 +132,16 @@ class API {
         }
     };
 
+    loadPlot = async (plotData) => {
+        const url = this.serializePlotUrl(plotData);
+
+        if (this.plotCache.has(url)) {
+            return this.plotCache.get(url);
+        } else {
+            return this.fetchPlot(plotData);
+        }
+    };
+
     getExportUrl = (query) => {
         if (query) {
             const queryKey = this.serializeQuery(
@@ -114,7 +152,6 @@ class API {
             return `api/export`;
         }
     };
-
 }
 
 const instance = new API();

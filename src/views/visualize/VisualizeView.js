@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
@@ -51,6 +51,12 @@ const VisualizeView = useModals(connect(
         <GraphConfigureModal row={row} index={idx}/>
     );
     const duplicateGraphHandler = (row, idx) => () => addGraph(graphs[row][idx], row);
+
+    useEffect(() => {
+        if (graphs.length === 0) {
+            addGraphHandler()();
+        }
+    }, []);
 
     return (
         <div className='visualize-view'>

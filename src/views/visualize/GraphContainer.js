@@ -23,6 +23,7 @@ const GraphContainer = ({
     };
     const onExpandClick = () => onExpand();
     const onRemoveClick = () => onRemove();
+    const onConfigureClick = () => onConfigure();
 
     return (
         <Card className={`graph-container ${className}`} {...props}>
@@ -35,12 +36,12 @@ const GraphContainer = ({
 
                     <Dropdown overlay={
                         <Menu onClick={onMenuClick}>
-                            <Menu.Item key='type'>Change Type...</Menu.Item>
                             <Menu.Item key='configure'>Configure...</Menu.Item>
+                            <Menu.Item key='type'>Change Type...</Menu.Item>
                             <Menu.Item key='duplicate'>Duplicate</Menu.Item>
                         </Menu>
                     }>
-                        <Button type='default' icon='setting'/>
+                        <Button type='default' icon='setting' onClick={onConfigureClick}/>
                     </Dropdown>
 
                     <Tooltip placement='bottomRight' title='Remove'>

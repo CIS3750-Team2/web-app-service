@@ -7,7 +7,7 @@ import logo from 'sundial_logo.png';
 
 const Header = withRouter(({location, history}) => (
     <>
-        <div className='logo'>
+        <div className='logo' onClick={() => history.push('/about')}>
             <img src={logo}/>
         </div>
         <Menu

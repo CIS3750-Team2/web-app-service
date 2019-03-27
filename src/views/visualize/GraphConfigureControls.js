@@ -90,11 +90,11 @@ const GraphConfigureControls = Form.create({
                     }]
                 })(
                     <Select mode='default'>
-                        <Select.Option key='mean'>Mean</Select.Option>
-                        <Select.Option key='median'>Median</Select.Option>
-                        <Select.Option key='mode'>Mode</Select.Option>
+                        <Select.Option key='avg'>Average</Select.Option>
+                        <Select.Option key='min'>Minimum</Select.Option>
+                        <Select.Option key='max'>Maximum</Select.Option>
                         <Select.Option key='std'>Standard Deviation</Select.Option>
-                        <Select.Option key='var'>Variance</Select.Option>
+                        <Select.Option key='sum'>Total</Select.Option>
                     </Select>
                 )}
             </Form.Item>

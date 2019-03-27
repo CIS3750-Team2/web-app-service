@@ -1,121 +1,121 @@
 import React, {useState, useEffect} from 'react';
+import _ from 'lodash';
+import API from 'core/api';
+
+import {
+    FlexibleXYPlot,
+    LineSeries,
+    VerticalBarSeries,
+    HeatmapSeries,
+    MarkSeries,
+    HorizontalGridLines,
+    XAxis,
+    YAxis,
+    ArcSeries,
+    Borders,
+    GradientDefs
+} from 'react-vis';
+import {Modal} from 'antd';
+
 import './Graph.scss';
-import {FlexibleXYPlot, 
-  FlexibleWidthXYPlot, 
-  FlexibleHeightXYPlot, 
-  LineSeries, 
-  VerticalBarSeries, 
-  HeatmapSeries, 
-  MarkSeries, 
-  HorizontalGridLines, 
-  VerticalGridLines, 
-  XAxis, 
-  YAxis, 
-  ArcSeries, 
-  Borders, 
-  GradientDefs} 
-from 'react-vis';
 
-var plotData = [
-    {x: 2015, y: 1080000},
-    {x: 2016, y: 1980000},
-    {x: 2017, y: 1620000}
-  ];
-
-var fields = [];
-
-for (var i = 0; i < plotData.length; ++i) {
-  fields[i] = plotData[i].x.toString();
-  plotData[i].x = i;
-}
-
+const SeriesForType = {
+  'line': LineSeries,
+  'bar': VerticalBarSeries,
+  'heatmap': HeatmapSeries,
+  'pie': ArcSeries,
+  'scatter': MarkSeries
+};
 
 const Graph = (data) => {
+    const [loading, setLoading] = useState(false);
+    const [plotData, setPlotData] = useState([]);
+    const [fieldData, setFieldData] = useState([]);
 
-  /*const [loading, setLoading] = useState(false);
-  const [plotData, setPlotData] = useState([]);
-  
-  useEffect(() => {
+    useEffect(() => {
+        setLoading(true);
+        API.loadPlot(data)
+            .then((plots) => {
+                let i = 0;
+                const fieldData = [];
+                const fields = _.reduce(plots, (acc, { x }) => {
+                    fieldData[i] = (x || '').toString();
+                    acc[(x || '').toString()] = i++;
+                    return acc;
+                }, {});
+                setPlotData(_.map(plots, (point) => ({
+                    ...point,
+                    x: fields[(point.x || '').toString()]
+                })));
+                setFieldData(fieldData);
+            })
+            .catch((err) => {
+                console.warn(err);
+                Modal.error({
+                  content: 'Error while loading, please retry!'
+                });
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, [data]);
 
-  }, [data]);*/
+    const Series = SeriesForType[data.type];
+    const xAxisProps = { title: data.xField };
+    const yAxisProps = { title: data.yField };
+    let extra;
 
-  switch(data.type) {
-    case 'line': return (
-    <div className='graph'>
-    <FlexibleXYPlot>
-    <LineSeries data = {plotData}/>
-    <GradientDefs>
-        <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
-        <stop offset="0%" stopColor="white" stopOpacity={0.4} />
-        <stop offset="100%" stopColor="blue" stopOpacity={0.3} />
-      </linearGradient>
-    </GradientDefs>
-    <Borders style={{
-    bottom: {fill: 'url(#CoolGradient)', opacity: 0.3},
-    left: {fill: '#fff', opacity: 0.3},
-    right: {fill: '#fff', opacity: 0.3},
-    top: {fill: '#fff'}
-    }}/>
-    <XAxis title = {data.xField} position = 'middle' tickFormat={v => fields[v]}/>
-    <YAxis title = {data.yField} orientation = 'left'/>
-    <HorizontalGridLines/>
-    </FlexibleXYPlot>
-  </div>);
+    if (data.type === 'line') {
+        xAxisProps.tickFormat = (v) => fieldData[v];
+        xAxisProps.position = 'middle';
+        yAxisProps.orientation = 'left';
+        extra = (
+            <>
+                <GradientDefs>
+                    <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
+                        <stop offset="0%" stopColor="white" stopOpacity={0.4} />
+                        <stop offset="100%" stopColor="blue" stopOpacity={0.3} />
+                    </linearGradient>
+                </GradientDefs>
+                <Borders style={{
+                    bottom: { fill: 'url(#CoolGradient)', opacity: 0.3 },
+                    left: { fill: '#fff', opacity: 0.3 },
+                    right: { fill: '#fff', opacity: 0.3 },
+                    top: { fill: '#fff' }
+                }}/>
+            </>
+        );
+    } else if (data.type === 'bar') {
+        xAxisProps.position = 'middle';
+        extra = (
+            <>
+                <GradientDefs>
+                    <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
+                        <stop offset="0%" stopColor="white" stopOpacity={0.4} />
+                        <stop offset="100%" stopColor="blue" stopOpacity={0.3} />
+                    </linearGradient>
+                </GradientDefs>
+                <Borders style={{
+                    bottom: { fill: 'url(#CoolGradient)', opacity: 0.3 },
+                    left: { fill: '#fff', opacity: 0.3 },
+                    right: { fill: '#fff', opacity: 0.3 },
+                    top: { fill: '#fff' }
+                }}/>
+            </>
+        );
+    }
 
-    case 'bar': return (
-    <div className='graph'>
-    <FlexibleXYPlot>
-    <VerticalBarSeries data = {plotData}/>
-    <GradientDefs>
-      <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
-        <stop offset="0%" stopColor="white" stopOpacity={0.4} />
-        <stop offset="100%" stopColor="blue" stopOpacity={0.3} />
-      </linearGradient>
-    </GradientDefs>
-    <Borders style={{
-    bottom: {fill: 'url(#CoolGradient)', opacity: 0.3},
-    left: {fill: '#fff', opacity: 0.3},
-    right: {fill: '#fff', opacity: 0.3},
-    top: {fill: '#fff'}
-    }}/>
-    <XAxis title = {data.xField} position = 'middle'/>
-    <YAxis title = {data.yField}/>
-    <HorizontalGridLines/>
-    </FlexibleXYPlot>
-  </div>);
-
-  case 'heatmap' : return (
-    <div className='graph'>
-    <FlexibleXYPlot>
-    <HeatmapSeries data = {plotData}/>
-    <XAxis title = {data.xField}/>
-    <YAxis title = {data.yField}/>
-    <HorizontalGridLines/>
-    </FlexibleXYPlot>
-  </div>);
-
-  case 'pie' : return (
-    <div className='graph'>
-    <FlexibleXYPlot>
-    <ArcSeries data = {plotData}/>
-    <XAxis title = {data.xField}/>
-    <YAxis title = {data.yField}/>
-    <HorizontalGridLines/>
-    </FlexibleXYPlot>
-  </div>);
-
-  case 'scatter': return (
-    <div className='graph'>
-    <FlexibleXYPlot>
-    <MarkSeries data = {plotData}/>
-    <XAxis title = {data.xField}/>
-    <YAxis title = {data.yField}/>
-    <HorizontalGridLines/>
-    </FlexibleXYPlot>
-  </div>);
-
-  }
-  
+    return (
+        <div className='graph'>
+            <FlexibleXYPlot>
+                <Series data={plotData}/>
+                {extra}
+                <XAxis {...xAxisProps}/>
+                <YAxis {...yAxisProps}/>
+                <HorizontalGridLines/>
+            </FlexibleXYPlot>
+        </div>
+    );
 };
 
 export default Graph;

@@ -9,20 +9,24 @@ import scatterPlot from 'scatter_plot.png';
 import whiskerGraph from 'whisker_graph.png';
 import heatMap from 'heat_map.png';
 
-
 import './GraphTypeSelect.scss';
 
-const GraphTypeButton = ({ onClick, label, image }) => (
+const GraphTypeButton = ({ onClick, label, image, disabled = false }) => (
     <Col span={8}>
         <Card
             onClick={onClick}
-            hoverable={true}
-            className='graph-type-button'
+            hoverable={!disabled}
+            className={`graph-type-button ${disabled ? 'disabled' : ''}`}
             bodyStyle={{
                 padding: '6px'
             }}
         >
-            <div className='graph-type-button-icon'><img src = {image}></img></div>
+            <div className='graph-type-button-icon'>
+                <img
+                    src={image}
+                    alt='Visual sample image'
+                />
+            </div>
             <span className='graph-type-button-label'>{label}</span>
         </Card>
     </Col>
@@ -61,6 +65,7 @@ const GraphTypeSelect = ({ onSelect }) =>  (
             <GraphTypeButton
                 label='Whisker Graph'
                 image={whiskerGraph}
+                disabled={true}
                 onClick={() => onSelect('whisker')}
             />
         </Row>

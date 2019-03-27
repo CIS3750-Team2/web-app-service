@@ -43,6 +43,12 @@ const DataTable = ({
     };
 
     useEffect(() => {
+        setPageData({
+            ...pageData,
+            start: 0
+        });
+    }, [filter, search]);
+    useEffect(() => {
         setLoading(true);
         const query = {
             ...pageData,

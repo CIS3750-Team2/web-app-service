@@ -14,7 +14,7 @@ import {
     ArcSeries,
     Hint
 } from 'react-vis';
-import {Modal, Spin} from 'antd';
+import {Modal, Spin, Empty} from 'antd';
 
 import './Graph.scss';
 
@@ -99,22 +99,29 @@ const Graph = (data) => {
         }
     }
 
+    let content;
+    if (plotData && plotData.length > 0) {
+        content = (
+            <FlexibleXYPlot
+                margin={{ left: 75, bottom: data.large ? 120 : 30, right: 20, top: 10 }}
+                onMouseLeave={() => setHighlight(undefined)}
+            >
+                <Series data={plotData} {...seriesProps}/>
+                {extra}
+                <XAxis {...xAxisProps}/>
+                <YAxis {...yAxisProps}/>
+                <HorizontalGridLines/>
+            </FlexibleXYPlot>
+        );
+    } else {
+        content = <Empty description='Configuration results in no data.'/>
+    }
+
     return (
         <div className='graph'>
             {loading
                 ? <Spin/>
-                : (
-                    <FlexibleXYPlot
-                        margin={{ left: 75, bottom: data.large ? 120 : 30, right: 20, top: 10 }}
-                        onMouseLeave={() => setHighlight(undefined)}
-                    >
-                        <Series data={plotData} {...seriesProps}/>
-                        {extra}
-                        <XAxis {...xAxisProps}/>
-                        <YAxis {...yAxisProps}/>
-                        <HorizontalGridLines/>
-                    </FlexibleXYPlot>
-                )
+                : content
             }
         </div>
     );

@@ -25,7 +25,7 @@ const GraphTypeButton = ({
             placement={altPos || 'top'}
         >
             <Card
-                onClick={onClick}
+                onClick={disabled ? () => {} : onClick}
                 hoverable={!disabled}
                 className={`graph-type-button ${disabled ? 'disabled' : ''}`}
                 bodyStyle={{

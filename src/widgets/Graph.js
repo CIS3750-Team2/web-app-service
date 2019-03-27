@@ -15,7 +15,7 @@ import {
     Borders,
     GradientDefs
 } from 'react-vis';
-import {Modal} from 'antd';
+import {Modal, Spin} from 'antd';
 
 import './Graph.scss';
 
@@ -37,12 +37,11 @@ const Graph = (data) => {
         API.loadPlot(data)
             .then((plots) => {
                 let i = 0;
-                const fieldData = [];
                 const fields = _.reduce(plots, (acc, { x }) => {
-                    fieldData[i] = (x || '').toString();
                     acc[(x || '').toString()] = i++;
                     return acc;
                 }, {});
+                const fieldData = _.map(fields, (idx, str) => str);
                 setPlotData(_.map(plots, (point) => ({
                     ...point,
                     x: fields[(point.x || '').toString()]
@@ -61,59 +60,35 @@ const Graph = (data) => {
     }, [data]);
 
     const Series = SeriesForType[data.type];
-    const xAxisProps = { title: data.xField };
-    const yAxisProps = { title: data.yField };
     let extra;
-
-    if (data.type === 'line') {
-        xAxisProps.tickFormat = (v) => fieldData[v];
-        xAxisProps.position = 'middle';
-        yAxisProps.orientation = 'left';
-        extra = (
-            <>
-                <GradientDefs>
-                    <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
-                        <stop offset="0%" stopColor="white" stopOpacity={0.4} />
-                        <stop offset="100%" stopColor="blue" stopOpacity={0.3} />
-                    </linearGradient>
-                </GradientDefs>
-                <Borders style={{
-                    bottom: { fill: 'url(#CoolGradient)', opacity: 0.3 },
-                    left: { fill: '#fff', opacity: 0.3 },
-                    right: { fill: '#fff', opacity: 0.3 },
-                    top: { fill: '#fff' }
-                }}/>
-            </>
-        );
-    } else if (data.type === 'bar') {
-        xAxisProps.position = 'middle';
-        extra = (
-            <>
-                <GradientDefs>
-                    <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
-                        <stop offset="0%" stopColor="white" stopOpacity={0.4} />
-                        <stop offset="100%" stopColor="blue" stopOpacity={0.3} />
-                    </linearGradient>
-                </GradientDefs>
-                <Borders style={{
-                    bottom: { fill: 'url(#CoolGradient)', opacity: 0.3 },
-                    left: { fill: '#fff', opacity: 0.3 },
-                    right: { fill: '#fff', opacity: 0.3 },
-                    top: { fill: '#fff' }
-                }}/>
-            </>
-        );
-    }
+    const xAxisProps = {
+        title: data.xField,
+        tickFormat: (v) => fieldData[v],
+        position: 'middle',
+        tickLabelAngle: data.large ? -90 : 0
+    };
+    const yAxisProps = {
+      title: data.yField,
+      position: 'middle',
+      orientation: 'left',
+    };
 
     return (
         <div className='graph'>
-            <FlexibleXYPlot>
-                <Series data={plotData}/>
-                {extra}
-                <XAxis {...xAxisProps}/>
-                <YAxis {...yAxisProps}/>
-                <HorizontalGridLines/>
-            </FlexibleXYPlot>
+          {loading
+              ? <Spin/>
+              : (
+                  <FlexibleXYPlot
+                      margin={{ left: 75, bottom: data.large ? 120 : 30, right: 20, top: 10 }}
+                  >
+                      <Series data={plotData}/>
+                      {extra}
+                      <XAxis {...xAxisProps}/>
+                      <YAxis {...yAxisProps}/>
+                      <HorizontalGridLines/>
+                  </FlexibleXYPlot>
+              )
+          }
         </div>
     );
 };

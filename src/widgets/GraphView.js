@@ -8,7 +8,7 @@ import './GraphView.scss';
 
 const GraphView = (graph) => (
     <div className='graph-view'>
-        <Graph {...graph}/>
+        <Graph {...graph} large={true}/>
 
         <Divider orientation='left'>
             Data

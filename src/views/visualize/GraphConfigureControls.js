@@ -39,8 +39,14 @@ const GraphConfigureControls = Form.create({
 
     useEffect(() => {
         const update = {};
-        if (!xField || xField.length === 0) update.xField = _.get(fields, [0, 'id']);
-        if (!yField || yField.length === 0) update.yField = _.get(fields, [0, 'id']);
+        if (!xField || xField.length === 0) update.xField =
+            fields.findIndex(({ id }) => id === 'year') > 0
+                ? 'year'
+                : _.get(fields, [0, 'id']);
+        if (!yField || yField.length === 0) update.yField =
+            fields.findIndex(({ id }) => id === 'salary') > 0
+                ? 'salary'
+                : _.get(fields, [0, 'id']);
         if (!yMethod || yMethod.length === 0) update.yMethod = 'avg';
 
         if (_.keys(update).length > 0) setFieldsValue(update);

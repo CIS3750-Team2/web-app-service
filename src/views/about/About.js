@@ -39,7 +39,7 @@ const About = () => {
                 <Col span={16}>
                     <img class="sizeA" src={image2}></img>
                     <br/>
-                    <Card className="custom-card" bordered={false}> 
+                    <Card className="custom-card" bordered={false}>
                         <p>
                             The goal of this project is to build a system to collect, display, and manipulate salary data from
                             Canada’s public sector high earners. The system needs to fetch data from three of Canada’s
@@ -60,7 +60,7 @@ const About = () => {
             <Row>
                 <Col span ={4}></Col>
                 <Col span={16}>
-                    <h2>Frequently Asked Questinos</h2>
+                    <h2>Frequently Asked Questions</h2>
                     <br/>
                     <br/>
                     <Collapse accordion>
@@ -102,7 +102,7 @@ const About = () => {
                                             }
                                         </div>
                                 </div>
-                            
+
                         </Panel>
                         <Panel header="Are there any tutorials?" key="3">
                             <p>Video tutorials are currently being developed to help you understand the system. Hang on tight!</p>
@@ -111,7 +111,7 @@ const About = () => {
                 </Col>
                 <Col span={4}></Col>
             </Row>
-                
+
             <BackTop />
         </div>
     );

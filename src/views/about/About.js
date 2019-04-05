@@ -48,7 +48,7 @@ const About = () => {
             <Row>
                 <Col span ={4}></Col>
                 <Col span={16}>
-                    <h2>Frequently Asked Questinos</h2>
+                    <h2>Frequently Asked Questions</h2>
                     <br/>
                     <br/>
                     <Collapse accordion>
@@ -62,8 +62,8 @@ const About = () => {
                             <img class="sizeB" src={image}></img>
                             <br/>
                             <p>
-                                Sundial was developed by a small effective team of prodigy programmers who formed a team called 1IA.<br/>Which is an acronym for One iteration Agile. This used this name because it best describes their design process.
-                                <br/>
+                            Sundial was developed by a small effective group of prodigy programmers who formed a team called 1IA.<br/>Which is an acronym for One iteration Agile. They used this name because it best describes their design process.
+                            <br/>
                             </p>
                             <br/>
                             <br/>
@@ -76,8 +76,8 @@ const About = () => {
                                     cover={<img alt="EvilKanoa" src={image4}/>}
                                 >
                                     <Meta
-                                    title="Lead Develope"
-                                    description="Github: EvilKanoa"
+                                    title="Lead Developer"
+                                    description="GitHub: EvilKanoa"
                                     />
                                 </Card>
                             </Col>
@@ -89,7 +89,7 @@ const About = () => {
                                 >
                                     <Meta
                                     title="UI / UX Designer"
-                                    description="Github: JasonEllul"
+                                    description="GitHub: JasonEllul"
                                     />
                                 </Card>
                             </Col>
@@ -101,7 +101,7 @@ const About = () => {
                                 >
                                     <Meta
                                     title="Research  &amp; Development"
-                                    description="Github: rikode"
+                                    description="GitHub: rikode"
                                     />
                                 </Card>
                             </Col>
@@ -115,7 +115,7 @@ const About = () => {
                                 >
                                     <Meta
                                     title="Lead Visualization Developer"
-                                    description="Github: samirhaq"
+                                    description="GitHub: samirhaq"
                                     />
                                 </Card>
                             </Col>
@@ -126,20 +126,18 @@ const About = () => {
                                     cover={<img alt="Maxwell2198" src={image5}/>}
                                 >
                                     <Meta
-                                    title="Lead Content Writer &amp; Documeter"
+                                    title="Lead Content Writer &amp; Documenter"
                                     description="Github: Maxwell2198"
                                     />
                                 </Card>
                             </Col>
                             <Col span={8}>
                             </Col>
-                            </Row>
-                            
+                            </Row> 
                         </Panel>
                         <Panel header="Tutorial" key="3">
                         <Carousel effect="fade">
                         <br/>
-                            
                             <div><iframe width="560" height="315" src="https://www.youtube.com/embed/1hJbZPt1w8g" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
                             <div><iframe width="560" height="315" src="https://www.youtube.com/embed/deB6N_AyopA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
                         </Carousel>
@@ -147,8 +145,7 @@ const About = () => {
                     </Collapse>
                 </Col>
                 <Col span={4}></Col>
-            </Row>
-                
+            </Row>         
             <BackTop />
         </div>
     );

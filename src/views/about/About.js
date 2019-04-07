@@ -59,30 +59,33 @@ const About = () => {
                             </p>
                         </Panel>
                         <Panel header="1IA" key="2">
+                            <br/>
                             <img class="sizeB" src={image}></img>
                             <br/>
+                            <br/>
                             <p>
-                            Sundial was developed by a small effective group of prodigy programmers who formed a team called 1IA.<br/>Which is an acronym for One iteration Agile. They used this name because it best describes their design process.
+                            Sundial was developed by a small effective group of prodigy programmers who formed a team called 1IA.<br/>Which is an acronym for One iteration Agile. They used this name because it best describes their design process. Sundail is an open-source program which can be found <a href="https://github.com/CIS3750-Team2"  target="_blank">here.</a> 
                             <br/>
                             </p>
                             <br/>
                             <br/>
                             <h1> Meet The Team</h1>
-                            <Row gutter={16}>
-                            <Col span={8}>
-                                <Card
+                            <Row type="flex" justify="space-around">
+                           
+                            <Col span={4}>
+                            <a href="https://github.com/EvilKanoa" target="_blank"><Card
                                     hoverable
                                     style={{ width: 240 }}
                                     cover={<img alt="EvilKanoa" src={image4}/>}
                                 >
-                                    <Meta
+                                   <Meta
                                     title="Lead Developer"
                                     description="GitHub: EvilKanoa"
                                     />
-                                </Card>
+                                </Card></a>
                             </Col>
-                            <Col span={8}>
-                                <Card
+                            <Col span={4}>
+                            <a href="https://github.com/JasonEllul" target="_blank"><Card
                                     hoverable
                                     style={{ width: 240 }}
                                     cover={<img alt="JasonEllul" src={image3}/>}
@@ -91,10 +94,10 @@ const About = () => {
                                     title="UI / UX Designer"
                                     description="GitHub: JasonEllul"
                                     />
-                                </Card>
+                                </Card></a>
                             </Col>
-                            <Col span={8}>
-                            <Card
+                            <Col span={4}>
+                            <a href="https://github.com/rikode" target="_blank"><Card
                                     hoverable
                                     style={{ width: 240 }}
                                     cover={<img alt="rico" src={image6}/>}
@@ -103,24 +106,26 @@ const About = () => {
                                     title="Research  &amp; Development"
                                     description="GitHub: rikode"
                                     />
-                                </Card>
+                                </Card></a>
                             </Col>
                             </Row>
-                            <Row gutter={16}>
-                            <Col span={8}>
-                            <Card
+                            <br/>
+                            <br/>
+                            <Row type="flex" justify="space-around">
+                            <Col span={4}>
+                            <a href="https://github.com/samirhaq" target="_blank"><Card
                                     hoverable
                                     style={{ width: 240 }}
                                     cover={<img alt="samirhaq" src={image7}/>}
                                 >
-                                    <Meta
+                                  <Meta
                                     title="Lead Visualization Developer"
                                     description="GitHub: samirhaq"
                                     />
-                                </Card>
+                                </Card></a>
                             </Col>
-                            <Col span={8}>
-                            <Card
+                            <Col span={4}>
+                            <a href="https://github.com/Maxwell2198" target="_blank"><Card
                                     hoverable
                                     style={{ width: 240 }}
                                     cover={<img alt="Maxwell2198" src={image5}/>}
@@ -129,10 +134,9 @@ const About = () => {
                                     title="Lead Content Writer &amp; Documenter"
                                     description="Github: Maxwell2198"
                                     />
-                                </Card>
+                                </Card></a>
                             </Col>
-                            <Col span={8}>
-                            </Col>
+                            <Col span={4}></Col>
                             </Row> 
                         </Panel>
                         <Panel header="Tutorial" key="3">

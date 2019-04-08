@@ -10,6 +10,12 @@
       height: 147px;
       width: 147px;
       text-align: center;
+      cursor: pointer;
+
+      &.disabled {
+        cursor: not-allowed;
+        border-style: dashed;
+      }
     }
   }
 }

@@ -64,7 +64,7 @@ const About = () => {
                             <br/>
                             <br/>
                             <p>
-                            Sundial was developed by a small effective group of prodigy programmers who formed a team called 1IA.<br/>Which is an acronym for One iteration Agile. They used this name because it best describes their design process. Sundail is an open-source program which can be found <a href="https://github.com/CIS3750-Team2"  target="_blank">here.</a> 
+                            Sundial was developed by a small effective group of prodigy programmers who formed a team called 1IA.<br/>Which is an acronym for One iteration Agile. They used this name because it best describes their design process. Sundial is an open-source program which can be found <a href="https://github.com/CIS3750-Team2"  target="_blank">here.</a> 
                             <br/>
                             </p>
                             <br/>
@@ -141,9 +141,10 @@ const About = () => {
                         </Panel>
                         <Panel header="Tutorial" key="3">
                         <Carousel effect="fade">
-                        <br/>
-                            <div><iframe width="560" height="315" src="https://www.youtube.com/embed/1hJbZPt1w8g" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
-                            <div><iframe width="560" height="315" src="https://www.youtube.com/embed/deB6N_AyopA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                  
+                            <div class="pad"><iframe width="560" height="315" src="https://www.youtube.com/embed/1hJbZPt1w8g" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                          
+                            <div class="pad"><iframe width="560" height="315" src="https://www.youtube.com/embed/deB6N_AyopA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
                         </Carousel>
                         </Panel>
                     </Collapse>

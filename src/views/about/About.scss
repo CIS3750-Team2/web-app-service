@@ -1,7 +1,9 @@
 .about-info {
   text-align: center;
 }
-
+.pad{
+  padding-top: 3em;
+}
 .steps-content {
   margin-top: 16px;
   border: 1px dashed #e9e9e9;
@@ -55,4 +57,16 @@
 
 .steps-action {
   margin-top: 24px;
+}
+
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 400px;
+  line-height: 160px;
+  background: #001529;
+  overflow: hidden;
+}
+
+.ant-carousel .slick-slide h3 {
+  color: #fff;
 }

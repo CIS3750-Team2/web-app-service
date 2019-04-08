@@ -1,9 +1,9 @@
-import React from 'react';
-import {connect} from 'react-redux';
+import React, {useState, useEffect} from 'react';
 import moment from 'moment';
 import _ from 'lodash';
 
 import {provinces} from 'util/constants';
+import {getTableColumns} from 'util/columns';
 
 import {
     Form,
@@ -73,15 +73,15 @@ const DataFilter = Form.create({
         changed,
         values
     ) => onChange(formatFilter(values))
-})(connect(
-    (state) => ({
-        fields: [{ id: 'name', label: 'Name' }] // TODO: Populate this
-    })
-)(({
+})(({
     form: { getFieldDecorator, getFieldValue, getFieldsValue },
-    onChange,
-    fields = []
+    onChange
 }) => {
+    const [fields, setFields] = useState([]);
+    useEffect(() => {
+        getTableColumns().then(setFields);
+    }, []);
+
     const salaryProps = {
         min: 0,
         max: 1000000000,
@@ -284,6 +284,6 @@ const DataFilter = Form.create({
             </Button>
         </Form>
     );
-}));
+});
 
 export default DataFilter;

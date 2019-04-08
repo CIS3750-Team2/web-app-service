@@ -37,6 +37,19 @@ export const addGraph = (graph, row) => ({
     row
 });
 
+export const updateGraph = (graph, row, idx) => ({
+    type: 'UPDATE_GRAPH',
+    graph,
+    row,
+    idx
+});
+
+export const removeGraph = (row, idx) => ({
+    type: 'REMOVE_GRAPH',
+    row,
+    idx
+});
+
 // reducer
 export default (state = initialState, { type, ...action }) => {
     switch (type) {
@@ -63,6 +76,41 @@ export default (state = initialState, { type, ...action }) => {
                         ? [...graphRow, action.graph]
                         : graphRow
                 )
+        };
+
+        case 'UPDATE_GRAPH': return {
+            ...state,
+            graphs: (
+                action.row < state.graphs.length
+                && action.idx < state.graphs[action.row].length
+            )
+                ? _.set(
+                    _.clone(state.graphs),
+                    [action.row, action.idx],
+                    {
+                        ...state.graphs[action.row][action.idx],
+                        ...action.graph
+                    }
+                )
+                : state.graphs
+        };
+
+        case 'REMOVE_GRAPH': return {
+            ...state,
+            graphs: _(state.graphs)
+                .map((graphRow, rowIdx) => {
+                    if (rowIdx !== action.row) return graphRow;
+
+                    if (graphRow.length > 1) {
+                        return _.filter(graphRow,
+                            (graph, graphIdx) => graphIdx !== action.idx
+                        );
+                    } else {
+                        return null;
+                    }
+                })
+                .filter()
+                .value()
         };
 
         default: return {

@@ -11,6 +11,12 @@ export const textHandler = (response) => response.text();
 
 const listHandler = (list) => list.map((entry) => {
     delete entry.original;
+    if (entry.salary) {
+        entry.salary = `$${entry.salary}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    if (entry.taxableBenefits) {
+        entry.taxableBenefits = `$${entry.taxableBenefits}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
     return entry;
 });
 const countHandler = (count) => parseInt(count) || 0;
@@ -31,6 +37,11 @@ class API {
     countCache = new LRUCache({
         max: 500
     });
+    plotCache = new LRUCache({
+        max: 100000,
+        length: (points) => points ? points.length : 1
+    });
+    fieldCache = undefined;
 
     serializeQuery = ({
         start = defaultQuery.start,
@@ -41,6 +52,14 @@ class API {
         filter = defaultQuery.filter
     } = defaultQuery) =>
         `start=${start}&limit=${limit}&search=${search}&sortField=${sortField}&sortOrder=${sortOrder}&filter=${serialize(filter)}`;
+
+    serializePlotUrl = ({ yField, xField, yMethod, filter}) => {
+        let url = `api/plot/${yField}/${yMethod}/vs/${xField}`;
+        if (filter) {
+            url += `?filter=${serialize(filter)}`;
+        }
+        return url;
+    };
 
     fetchList = async (query = defaultQuery) => {
         const queryKey = this.serializeQuery(query);
@@ -65,6 +84,22 @@ class API {
         return count;
     };
 
+    fetchPlot = async (plotData) => {
+        const { yField, xField, yMethod } = plotData;
+        if (!yField || !yField.length || !xField || !xField.length || !yMethod || !yMethod.length) {
+            return [];
+        }
+
+        const url = this.serializePlotUrl(plotData);
+        const plots = await fetch(url).then(errorHandler).then(jsonHandler);
+
+        if (plots) {
+            this.plotCache.set(url, plots);
+        }
+
+        return plots;
+    };
+
     loadData = async (query = defaultQuery) => {
         const queryKey = this.serializeQuery(query);
 
@@ -84,6 +119,37 @@ class API {
             return this.countCache.get(queryKey);
         } else {
             return this.fetchCount(query);
+        }
+    };
+
+    loadFields = async () => {
+        if (this.fieldCache) {
+            return this.fieldCache;
+        } else {
+            this.fieldCache = await fetch('api/fields')
+                .then(errorHandler).then(jsonHandler);
+            return this.fieldCache;
+        }
+    };
+
+    loadPlot = async (plotData) => {
+        const url = this.serializePlotUrl(plotData);
+
+        if (this.plotCache.has(url)) {
+            return this.plotCache.get(url);
+        } else {
+            return this.fetchPlot(plotData);
+        }
+    };
+
+    getExportUrl = (query) => {
+        if (query) {
+            const queryKey = this.serializeQuery(
+                _.omit(query, ['start', 'limit', 'sortField', 'sortOrder'])
+            );
+            return `api/export?${queryKey}`;
+        } else {
+            return `api/export`;
         }
     };
 }

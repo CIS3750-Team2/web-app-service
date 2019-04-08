@@ -1,22 +1,46 @@
 import React from 'react';
 
-import {Card, Row, Col} from 'antd';
+import {Card, Row, Col, Tooltip} from 'antd';
+
+import lineGraph from 'line_graph.png';
+import barGraph from 'bar_graph.png';
+import pieChart from 'pie_chart.png';
+import scatterPlot from 'scatter_plot.png';
+import whiskerGraph from 'whisker_graph.png';
+import heatMap from 'heat_map.png';
 
 import './GraphTypeSelect.scss';
 
-const GraphTypeButton = ({ onClick, label, image }) => (
+const GraphTypeButton = ({
+    onClick,
+    label,
+    image,
+    disabled = false,
+    alt,
+    altPos
+}) => (
     <Col span={8}>
-        <Card
-            onClick={onClick}
-            hoverable={true}
-            className='graph-type-button'
-            bodyStyle={{
-                padding: '6px'
-            }}
+        <Tooltip
+            title={disabled ? 'Visual type is not currently supported' : alt}
+            placement={altPos || 'top'}
         >
-            <div className='graph-type-button-icon'>{image}</div>
-            <span className='graph-type-button-label'>{label}</span>
-        </Card>
+            <Card
+                onClick={disabled ? () => {} : onClick}
+                hoverable={!disabled}
+                className={`graph-type-button ${disabled ? 'disabled' : ''}`}
+                bodyStyle={{
+                    padding: '6px'
+                }}
+            >
+                <div className='graph-type-button-icon'>
+                    <img
+                        src={image}
+                        alt='Visual sample image'
+                    />
+                </div>
+                <span className='graph-type-button-label'>{label}</span>
+            </Card>
+        </Tooltip>
     </Col>
 );
 
@@ -25,35 +49,45 @@ const GraphTypeSelect = ({ onSelect }) =>  (
        <Row className='graph-type-row' gutter={12}>
            <GraphTypeButton
                label='Line Graph'
-               image={null}
+               image={lineGraph}
+               alt='Visual type is partially supported'
                onClick={() => onSelect('line')}
+               altPos='top'
            />
            <GraphTypeButton
                label='Bar Graph'
-               image={null}
+               image={barGraph}
                onClick={() => onSelect('bar')}
+               altPos='top'
            />
            <GraphTypeButton
                label='Pie Chart'
-               image={null}
+               image={pieChart}
+               disabled={true}
                onClick={() => onSelect('pie')}
+               altPos='top'
            />
        </Row>
         <Row className='graph-type-row' gutter={12}>
             <GraphTypeButton
                 label='Scatter Plot'
-                image={null}
+                image={scatterPlot}
                 onClick={() => onSelect('scatter')}
-            />
-            <GraphTypeButton
-                label='Heat Map'
-                image={null}
-                onClick={() => onSelect('heatmap')}
+                altPos='bottom'
             />
             <GraphTypeButton
                 label='Whisker Graph'
-                image={null}
+                image={whiskerGraph}
+                disabled={true}
                 onClick={() => onSelect('whisker')}
+                altPos='bottom'
+            />
+            <GraphTypeButton
+                label='Heat Map'
+                image={heatMap}
+                disabled={true}
+                onClick={() => onSelect('heatmap')}
+                altPos='bottom'
             />
         </Row>
     </div>

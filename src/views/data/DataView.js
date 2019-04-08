@@ -14,11 +14,11 @@ const DataView = connect(
         filter: getTableFilter(state),
         search: getTableSearch(state)
     })
-)(({ filter, search }) => (
+)(({filter, search}) => (
     <div className='data-view'>
         <Card>
-            <ControlBar/>
-            <DataTable filter={filter} search={search}/>
+            <ControlBar />
+            <DataTable filter={filter} search={search} />
         </Card>
     </div>
 ));

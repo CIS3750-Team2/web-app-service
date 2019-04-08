@@ -4,33 +4,21 @@ import { Row, Col } from 'antd';
 import { BackTop } from 'antd';
 import { Collapse } from 'antd';
 import { Card } from 'antd';
-import { Steps, Button, message } from 'antd';
+import { Carousel } from 'antd';
 import './About.scss';
 import image from '1ialogo.png'
 import image2 from 'sundial_logo.png'
+import image3 from 'jas.png'
+import image4 from 'k.png'
+import image5 from 'max.png'
+import image6 from 'rico.png'
+import image7 from 'sam.png'
 
 const Panel = Collapse.Panel;
-const Step = Steps.Step;
-const steps = [{
-    title: 'First',
-    content: 'Searches the internet for data',
-  }, {
-    title: 'Second',
-    content: 'The data is then sorted and stored in our database',
-  }, {
-    title: 'Last',
-    content: 'Our front-end then reads this data and displays it to you',
-  }];
-
+const { Meta } = Card;
 
 const About = () => {
-    const [current, setCurrent] = useState(0);
-    const next = () => {
-        setCurrent(current + 1);
-    };
-    const prev = () => {
-        setCurrent(current - 1)
-    };
+
 
     return (
         <div className='about-info'>
@@ -70,47 +58,98 @@ const About = () => {
                                 To get started, visit the <Link to='/data'>Data</Link> page to view all the sunshine list data. Afterwards, you can visit the <Link to='/visualize'>Visualize</Link> page to dive deep into the data!
                             </p>
                         </Panel>
-                        <Panel header="How was Sundial made?" key="2">
+                        <Panel header="1IA" key="2">
+                            <br/>
                             <img class="sizeB" src={image}></img>
+                            <br/>
+                            <br/>
                             <p>
-                                Sundial was developed by a small effective team of prodigy programmers who formed a team called 1IA.<br/>Which is an acronym for One iteration Agile. This used this name because it best describes their design process.
-                                <br/>
+                            Sundial was developed by a small effective group of prodigy programmers who formed a team called 1IA.<br/>Which is an acronym for One iteration Agile. They used this name because it best describes the design process. Sundial is an open-source program which can be found <a href="https://github.com/CIS3750-Team2"  target="_blank">here.</a> 
+                            <br/>
                             </p>
                             <br/>
                             <br/>
-                                <div>
-                                    <Steps current={current}>
-                                    {steps.map(item =><Step key={item.title} title={item.title} />)}
-                                    </Steps>
-                                        <div class="steps-content">{steps[current].content}</div>
-                                            <div class="steps-action">
-                                            {
-                                                current < steps.length - 1
-                                                && <Button type="primary" onClick={() => next()}>Next</Button>
-                                            }
-                                            {
-                                                current === steps.length - 1
-                                                && <Button type="primary" onClick={() => message.success('Process complete!')}>Done</Button>
-                                            }
-                                            {
-                                                current > 0
-                                                && (
-                                                <Button style={{ marginLeft: 8 }} onClick={() => prev()}>
-                                                Previous
-                                                </Button>
-                                                )
-                                            }
-                                        </div>
-                                </div>
-
+                            <h1> Meet The Team</h1>
+                            <Row type="flex" justify="space-around">
+                           
+                            <Col span={4}>
+                            <a href="https://github.com/EvilKanoa" target="_blank"><Card
+                                    hoverable
+                                    style={{ width: 240 }}
+                                    cover={<img alt="EvilKanoa" src={image4}/>}
+                                >
+                                   <Meta
+                                    title="Lead Developer"
+                                    description="GitHub: EvilKanoa"
+                                    />
+                                </Card></a>
+                            </Col>
+                            <Col span={4}>
+                            <a href="https://github.com/JasonEllul" target="_blank"><Card
+                                    hoverable
+                                    style={{ width: 240 }}
+                                    cover={<img alt="JasonEllul" src={image3}/>}
+                                >
+                                    <Meta
+                                    title="UI / UX Designer"
+                                    description="GitHub: JasonEllul"
+                                    />
+                                </Card></a>
+                            </Col>
+                            <Col span={4}>
+                            <a href="https://github.com/rikode" target="_blank"><Card
+                                    hoverable
+                                    style={{ width: 240 }}
+                                    cover={<img alt="rico" src={image6}/>}
+                                >
+                                    <Meta
+                                    title="Research  &amp; Development"
+                                    description="GitHub: rikode"
+                                    />
+                                </Card></a>
+                            </Col>
+                            </Row>
+                            <br/>
+                            <br/>
+                            <Row type="flex" justify="space-around">
+                            <Col span={4}>
+                            <a href="https://github.com/samirhaq" target="_blank"><Card
+                                    hoverable
+                                    style={{ width: 240 }}
+                                    cover={<img alt="samirhaq" src={image7}/>}
+                                >
+                                  <Meta
+                                    title="Lead Visualization Developer"
+                                    description="GitHub: samirhaq"
+                                    />
+                                </Card></a>
+                            </Col>
+                            <Col span={4}>
+                            <a href="https://github.com/Maxwell2198" target="_blank"><Card
+                                    hoverable
+                                    style={{ width: 240 }}
+                                    cover={<img alt="Maxwell2198" src={image5}/>}
+                                >
+                                    <Meta
+                                    title="Lead Content Writer &amp; Documenter"
+                                    description="Github: Maxwell2198"
+                                    />
+                                </Card></a>
+                            </Col>
+                            <Col span={4}></Col>
+                            </Row>
                         </Panel>
-                        <Panel header="Are there any tutorials?" key="3">
-                            <p>Video tutorials are currently being developed to help you understand the system. Hang on tight!</p>
+                        <Panel header="Tutorial" key="3">
+                        <Carousel effect="fade">
+                        <br/>
+                            <div><iframe width="560" height="315" src="https://www.youtube.com/embed/1hJbZPt1w8g" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                            <div><iframe width="560" height="315" src="https://www.youtube.com/embed/deB6N_AyopA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                        </Carousel>
                         </Panel>
                     </Collapse>
                 </Col>
                 <Col span={4}></Col>
-            </Row>
+            </Row>         
 
             <BackTop />
         </div>
